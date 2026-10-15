@@ -81,7 +81,7 @@ a{color:#FF7A1A}a:hover{color:#E0620A}
                 <sc-if value="{{ h.hasMark }}"><span style="font-size:9px;font-weight:800;color:#6E6878;letter-spacing:.3px">{{ h.mark }}</span></sc-if>
               </div>
               <sc-if value="{{ h.hasMore }}"><span style="position:absolute;right:-10px;top:14px;height:18px;min-width:18px;padding:0 4px;border-radius:9px;background:#2A1A3E;color:#fff;font-size:10px;font-weight:800;line-height:18px;text-align:center;box-sizing:border-box">{{ h.more }}</span></sc-if>
-              <sc-if value="{{ h.hasFriend }}"><span style="position:absolute;left:-10px;top:14px;width:18px;height:18px;border-radius:9px;background:{{ h.friendColor }};border:2px solid #fff;box-sizing:border-box;font-size:9px;font-weight:800;line-height:14px;text-align:center;color:#2A1A3E">{{ h.friendLetter }}</span></sc-if>
+              <sc-if value="{{ h.hasFriend }}"><span style="position:absolute;left:-10px;top:14px;width:18px;height:18px;border-radius:9px;background:{{ h.friendColor }};border:2px solid #fff;box-sizing:border-box;font-size:9px;font-weight:800;line-height:14px;text-align:center;color:#2A1A3E"><span style="width:14px;height:14px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(0.36)"><sc-for list="{{ h.friendParts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span></sc-if>
               <sc-if value="{{ h.isFull }}"><span style="position:absolute;left:50%;top:-14px;transform:translateX(-50%);padding:0 5px;border-radius:5px;background:#FFC83D;color:#2A1A3E;font-size:9px;font-weight:800;line-height:14px;white-space:nowrap">FULL-SIZE</span></sc-if>
             </div>
           </sc-if>
@@ -91,7 +91,7 @@ a{color:#FF7A1A}a:hover{color:#E0620A}
       </sc-for>
       <div style="position:absolute;left:{{ meLeft }};top:{{ meTop }};width:36px;height:36px;pointer-events:none;transform:scale(var(--iz, 1))">
         <div style="position:absolute;inset:0;border-radius:18px;background:#4DA3FF;animation:cmpulse 2s infinite"></div>
-        <div style="position:absolute;inset:0;border-radius:18px;background:{{ meAv.color }};border:3px solid #fff;box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#2A1A3E;box-shadow:0 2px 8px rgba(30,25,20,.35)">{{ meAv.letter }}</div>
+        <div style="position:absolute;inset:0;border-radius:18px;background:{{ meAv.color }};border:3px solid #fff;box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#2A1A3E;box-shadow:0 2px 8px rgba(30,25,20,.35)"><span style="width:30px;height:30px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(0.75)"><sc-for list="{{ meAv.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></div>
       </div>
     </div>
   </div>
@@ -102,7 +102,7 @@ a{color:#FF7A1A}a:hover{color:#E0620A}
       <span style="display:flex;gap:5px;align-items:center"><span style="width:17px;height:10px;border-radius:2px;background:#2A1A3E"></span><span style="width:24px;height:11px;border-radius:3px;border:1.5px solid #2A1A3E;box-sizing:border-box;padding:1px;display:flex"><span style="height:100%;width:70%;background:#2A1A3E;border-radius:1px"></span></span></span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;padding:2px 16px 10px;pointer-events:auto">
-      <button onClick="{{ openMe }}" style="flex:none;width:48px;height:48px;border-radius:24px;border:3px solid #fff;background:{{ meAv.color }};box-shadow:0 4px 12px rgba(42,26,62,.2);font:800 19px 'Figtree',sans-serif;color:#2A1A3E;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">{{ meAv.letter }}</button>
+      <button onClick="{{ openMe }}" style="flex:none;width:48px;height:48px;border-radius:24px;border:3px solid #fff;background:{{ meAv.color }};box-shadow:0 4px 12px rgba(42,26,62,.2);font:800 19px 'Figtree',sans-serif;color:#2A1A3E;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0"><span style="width:42px;height:42px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(1.05)"><sc-for list="{{ meAv.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></button>
       <button onClick="{{ openPlace }}" style="flex:1;min-width:0;border:none;background:transparent;padding:0;text-align:left;cursor:pointer;color:#2A1A3E;font-family:'Figtree',sans-serif">
         <div style="font-size:25px;font-weight:800;line-height:1.05;letter-spacing:-.3px">Candy Map</div>
         <div style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:#FF7A1A;line-height:1.3;margin-top:1px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ placeName }}</span><span style="flex:none;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #FF7A1A"></span></div>
@@ -138,7 +138,7 @@ a{color:#FF7A1A}a:hover{color:#E0620A}
       <button onClick="{{ openFriends }}" style="flex:none;height:66px;padding:0 16px;border-radius:33px;border:none;background:#fff;box-shadow:0 8px 22px rgba(42,26,62,.18);display:flex;align-items:center;gap:8px;cursor:pointer;font:700 15px 'Figtree',sans-serif;color:#2A1A3E">
         <span style="display:flex">
           <sc-for list="{{ friendMini }}" as="fm" hint-placeholder-count="3">
-            <span style="width:28px;height:28px;border-radius:14px;background:{{ fm.color }};border:2px solid #fff;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800">{{ fm.letter }}</span>
+            <span style="width:28px;height:28px;border-radius:14px;background:{{ fm.color }};border:2px solid #fff;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800"><span style="width:24px;height:24px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(0.6)"><sc-for list="{{ fm.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span>
           </sc-for>
         </span>Friends
       </button>
@@ -167,7 +167,7 @@ a{color:#FF7A1A}a:hover{color:#E0620A}
         <button onClick="{{ closeSel }}" style="flex:none;width:38px;height:38px;border-radius:19px;border:none;background:#F4EADB;color:#2A1A3E;font:700 20px 'Figtree',sans-serif;cursor:pointer">×</button>
       </div>
       <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
-        <span style="width:26px;height:26px;border-radius:13px;background:{{ selBy.color }};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800">{{ selBy.letter }}</span>
+        <span style="width:26px;height:26px;border-radius:13px;background:{{ selBy.color }};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800"><span style="width:26px;height:26px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(0.65)"><sc-for list="{{ selBy.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span>
         <span style="font-size:14px;font-weight:600;color:#5E5470">{{ selBy.text }}</span>
       </div>
       <sc-if value="{{ isSkip }}" hint-placeholder-val="{{ false }}">
@@ -339,7 +339,7 @@ a{color:#FF7A1A}a:hover{color:#E0620A}
           <div style="display:flex;flex-direction:column;gap:6px">
             <sc-for list="{{ friendRows }}" as="fr" hint-placeholder-count="3">
               <div style="height:62px;border-radius:18px;background:#fff;display:flex;align-items:center;gap:12px;padding:0 14px">
-                <span style="width:40px;height:40px;border-radius:20px;background:{{ fr.color }};display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex:none">{{ fr.letter }}</span>
+                <span style="width:40px;height:40px;border-radius:20px;background:{{ fr.color }};display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex:none"><span style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(1)"><sc-for list="{{ fr.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span>
                 <div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:800;line-height:1.1">{{ fr.name }}</div><div style="font-size:13px;font-weight:600;color:#8A7E9A">{{ fr.costume }} · {{ fr.count }}</div></div>
               </div>
             </sc-for>
@@ -361,7 +361,7 @@ a{color:#FF7A1A}a:hover{color:#E0620A}
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
             <sc-for list="{{ costumeOpts }}" as="co" hint-placeholder-count="8">
               <button onClick="{{ co.onClick }}" style="aspect-ratio:1/1.15;border-radius:20px;border:3px solid {{ co.border }};background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;padding:0;color:#2A1A3E">
-                <span style="width:44px;height:44px;border-radius:22px;background:{{ co.color }};display:flex;align-items:center;justify-content:center;font:800 19px 'Figtree',sans-serif">{{ co.letter }}</span>
+                <span style="width:44px;height:44px;border-radius:22px;background:{{ co.color }};display:flex;align-items:center;justify-content:center;font:800 19px 'Figtree',sans-serif"><span style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(1.1)"><sc-for list="{{ co.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span>
                 <span style="font:700 13px 'Figtree',sans-serif">{{ co.label }}</span>
               </button>
             </sc-for>
@@ -506,7 +506,19 @@ const TH = { pin: '#FF7A1A', full: '#FFC83D', skip: '#C9C2D3', ring: '#FFFFFF', 
   chipBg: '#FFFFFF', chipInk: '#2A1A3E', chipOnBg: '#2A1A3E', chipOnInk: '#FFFFFF', off: '#F4EADB', cr: '#FF7A1A', sr: '#8B5CF6', srInk: '#FFFFFF', mutedInk: '#8A7E9A', line: '#D9CBB6', rowBg: '#FFF7EC', rowOn: '#F3EDFF', rcBrowse: '110px', rcPlace: '204px' };
 const CANDY = { choc: { label: 'Chocolate bars', color: '#8A5A3B' }, pb: { label: 'Peanut butter cups', color: '#E8933A' }, gummy: { label: 'Gummies', color: '#3FBF6F' }, sour: { label: 'Sour stuff', color: '#B8D430' }, pop: { label: 'Lollipops', color: '#FF5FA2' }, caramel: { label: 'Caramels', color: '#D9A441' }, chips: { label: 'Chips', color: '#F2C94C' }, toy: { label: 'Toys & stickers', color: '#3E9BFF' } };
 const NICK = ['Candy Castle', 'Spooky Mansion', 'Pumpkin Palace', 'Skeleton Shack', 'Sugar Shack', 'Witch Hut', 'Bat Cave', 'Monster Manor', 'Goblin Garage', 'Treat Tower', 'Cobweb Cottage', 'Zombie Zone'];
-const COST = { witch: ['Witch', '#A98BFF', 'W'], vampire: ['Vampire', '#FF6B6B', 'V'], robot: ['Robot', '#6FB8FF', 'R'], pumpkin: ['Pumpkin', '#FF9A4A', 'P'], ghost: ['Ghost', '#EDE8F5', 'G'], hero: ['Superhero', '#F5C518', 'S'], dino: ['Dinosaur', '#5FD38A', 'D'], mummy: ['Mummy', '#D8C7A0', 'M'] };
+const COST = { witch: ['Witch', '#A98BFF', 'W'], vampire: ['Vampire', '#FF6B6B', 'V'], robot: ['Robot', '#6FB8FF', 'R'], pumpkin: ['Pumpkin', '#FF9A4A', 'P'], ghost: ['Ghost', '#CBBDFF', 'G'], hero: ['Superhero', '#F5C518', 'S'], dino: ['Dinosaur', '#5FD38A', 'D'], mummy: ['Mummy', '#D8C7A0', 'M'] };
+const SK = '#F6D3B3', INK = '#2A1A3E';
+const AVP = {
+  witch: [[9, 17, 22, 21, 11, '#9FD9A0'], [14, 25, 3, 4, 2, INK], [23, 25, 3, 4, 2, INK], [17, 31, 6, 2, 1, INK], [13, 0, 14, 17, '7px 7px 2px 2px', INK], [13, 11, 14, 3, 0, '#8B5CF6'], [3, 14, 34, 5, 3, INK]],
+  vampire: [[3, 22, 34, 20, '10px 10px 4px 4px', '#C62828'], [9, 6, 22, 26, 11, '#EDE7F2'], [9, 4, 22, 9, '11px 11px 2px 2px', INK], [17, 8, 6, 6, 1, INK, 45], [13, 17, 4, 3, 2, '#C62828'], [23, 17, 4, 3, 2, '#C62828'], [15, 24, 10, 2, 1, INK], [16, 25, 2, 3, 0, '#fff'], [22, 25, 2, 3, 0, '#fff']],
+  robot: [[19, 2, 2, 7, 1, '#7A8594'], [17, 0, 6, 4, 2, '#FF5F5F'], [4, 15, 4, 8, 2, '#7A8594'], [32, 15, 4, 8, 2, '#7A8594'], [7, 7, 26, 25, 5, '#C4CDD8'], [10, 12, 20, 9, 3, INK], [13, 15, 5, 3, 1, '#5FE0FF'], [22, 15, 5, 3, 1, '#5FE0FF'], [14, 25, 12, 3, 1, '#7A8594']],
+  pumpkin: [[4, 9, 32, 27, 14, '#FF8A1F'], [15, 9, 10, 27, 8, '#FFA04A'], [18, 3, 4, 8, 2, '#4A7A2C'], [11, 17, 6, 6, 1, '#5A2A00', 45], [23, 17, 6, 6, 1, '#5A2A00', 45], [12, 26, 16, 5, '0 0 5px 5px', '#5A2A00']],
+  ghost: [[8, 4, 24, 28, '12px 12px 3px 3px', '#FFFFFF'], [8, 28, 9, 8, 4, '#FFFFFF'], [15.5, 28, 9, 8, 4, '#FFFFFF'], [23, 28, 9, 8, 4, '#FFFFFF'], [14, 13, 4, 6, 2, INK], [22, 13, 4, 6, 2, INK], [17, 22, 6, 5, 3, INK]],
+  hero: [[5, 20, 30, 22, '4px 4px 10px 10px', '#E5484D'], [10, 5, 20, 24, 10, SK], [10, 3, 20, 9, '10px 10px 2px 2px', '#3A2A1E'], [10, 12, 20, 6, 3, '#2E5BD8'], [14, 13, 4, 3, 2, '#fff'], [22, 13, 4, 3, 2, '#fff'], [17, 22, 6, 2, 1, '#3A2A1E'], [16, 32, 8, 6, 2, '#FFC83D']],
+  dino: [[8, 7, 6, 6, 1, '#2E9E6A', 45], [16.5, 3, 7, 7, 1, '#2E9E6A', 45], [26, 7, 6, 6, 1, '#2E9E6A', 45], [6, 9, 28, 26, 13, '#5FD38A'], [11, 16, 18, 16, 9, SK], [15, 21, 3, 3, 2, INK], [22, 21, 3, 3, 2, INK], [18, 27, 4, 2, 1, INK]],
+  mummy: [[8, 5, 24, 31, 12, '#EFE6D2'], [6, 10, 28, 3, 0, '#D2C29F', -8], [6, 29, 28, 3, 0, '#D2C29F', -5], [12, 19, 16, 7, 3, INK], [14, 20.5, 4, 4, 2, '#FFE27A'], [22, 20.5, 4, 4, 2, '#FFE27A'], [6, 15, 28, 2.5, 0, '#D2C29F', 6]]
+};
+const avParts = k => (AVP[k] || AVP.pumpkin).map(p => ({ l: p[0] + 'px', t: p[1] + 'px', w: p[2] + 'px', h: p[3] + 'px', r: typeof p[4] === 'string' ? p[4] : p[4] + 'px', bg: p[5], tf: p[6] ? 'rotate(' + p[6] + 'deg)' : 'none' }));
 const SKIPS = ['Lights off', 'Too spooky', 'No one home'];
 const CHEERS = ['BOO-yah!', 'Spook-tacular!', 'Ghoul job!', 'Fang-tastic!', 'Sweet!!'];
 const CRW = ['Tap a number', 'Meh', 'Okay', 'Good', 'Great', 'AMAZING'];
@@ -744,7 +756,7 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state, d = s.d;
     const sel = s.houses.find(h => h.id === s.sel);
-    const av = k => { const c = COST[k]; return { label: c[0], color: c[1], letter: c[2] }; };
+    const av = k => { const c = COST[k]; return { label: c[0], color: c[1], letter: c[2], parts: avParts(k) }; };
     const who = id => { if (id === 'me') return { name: 'you', ...av(s.me) }; const f = s.friends.find(x => x.id === id) || s.friends[0]; return { name: f.name, ...av(f.costume), letter: f.name[0] }; };
     const visited = s.houses.filter(h => h.visited);
     const open = s.houses.filter(h => h.tagged && !h.out && !h.skip).length;
@@ -778,7 +790,7 @@ class Component extends DCLogic {
           hasPin: h.tagged, pinT: (roofT - 30) + 'px', ring: gray ? '#B7B1BF' : h.full ? '#FFC83D' : '#FF7A1A', op: dim ? 0.3 : gray ? 0.85 : 1, scale: isSel ? 1.22 : 1,
           hasIcon, icon: hasIcon ? cinfo(h.candy[0]).icon : [], hasMark: h.tagged && !hasIcon, mark: h.skip ? (h.skip === 'Lights off' ? 'DARK' : 'SKIP') : 'OUT',
           hasMore: hasIcon && h.candy.length > 1, more: '+' + (h.candy.length - 1), isFull: h.full && !gray,
-          hasFriend: !!fr, friendColor: fr ? COST[fr.costume][1] : '', friendLetter: fr ? fr.name[0] : '',
+          hasFriend: !!fr, friendColor: fr ? COST[fr.costume][1] : '', friendLetter: fr ? fr.name[0] : '', friendParts: fr ? avParts(fr.costume) : [],
           isPick: !h.tagged && (s.mode === 'pick' || (s.real && s.editing === h.id)), pickT: (roofT + 4) + 'px', showLabel: h.tagged && !h.skip && (isSel || !!this.props.pinLabels), labelT: (roofB + 4) + 'px', label: h.nick || '', onClick: () => this.tapHouse(h) };
       }),
       countText: `${s.houses.filter(h => h.tagged).length} houses tagged · ${open} giving candy`,
@@ -851,7 +863,7 @@ class Component extends DCLogic {
         this.toast(nf[0] + ' joined your crew!');
       },
       friendRows, friendMini: friendRows.slice(0, 3),
-      costumeOpts: Object.entries(COST).map(([k, c]) => ({ label: c[0], color: c[1], letter: c[2], border: s.me === k ? TH.pin : 'transparent', onClick: () => { this.setState({ me: k }); this.toast('Looking good, ' + c[0].toLowerCase() + '!'); } })),
+      costumeOpts: Object.entries(COST).map(([k, c]) => ({ label: c[0], color: c[1], letter: c[2], parts: avParts(k), border: s.me === k ? TH.pin : 'transparent', onClick: () => { this.setState({ me: k }); this.toast('Looking good, ' + c[0].toLowerCase() + '!'); } })),
       hasCheer: !!s.cheer, cheerTitle: s.cheer ? s.cheer.t : '', cheerSub: s.cheer ? s.cheer.s : '',
       hasToast: !!s.toast, toastText: s.toast
     };
