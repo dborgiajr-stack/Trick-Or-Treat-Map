@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3EEE6}
+a{color:#FF7A1A}a:hover{color:#E0620A}
+@keyframes cmpulse{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.4);opacity:0}}
+@keyframes tbpop{0%{transform:translateY(24px);opacity:0}100%{transform:none;opacity:1}}
+.cm-base .bld{cursor:pointer;transition:fill .2s}
+.cm-base .cm-sat-img{display:none}
+.cm-base.cm-photo .cm-sat-img{display:block;filter:saturate(.9) brightness(1.05)}
+.cm-base.cm-photo .cm-bg,.cm-base.cm-photo .cm-areas,.cm-base.cm-photo .cm-shad,.cm-base.cm-photo .cm-oth{display:none}
+.cm-base.cm-photo .cm-roads{opacity:.5}
+.cm-base.cm-photo .bld{fill:#fff;fill-opacity:.1;stroke:#fff;stroke-width:1.5;stroke-opacity:.75}
+.cm-base.cm-photo .cm-lbl text{fill:#fff;paint-order:stroke;stroke:rgba(30,25,20,.65);stroke-width:3px}
+.cm-base.cm-pick .bld{stroke:#FF7A1A;stroke-width:2;stroke-dasharray:4 3}
+.cm-base .bld.sel{stroke:#2A1A3E;stroke-width:3}
+@keyframes tbhop{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes tbbob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-10px) rotate(5deg)}}
+@keyframes tbzoom{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+</style>
+</helmet>
+<div data-screen-label="2a Bright map-first" style="width:390px;height:844px;box-sizing:border-box;border-radius:56px;background:#1E1428;padding:11px;box-shadow:0 30px 70px rgba(42,26,62,.3);font-family:'Figtree',system-ui,sans-serif;margin:0 auto">
+<div style="position:relative;width:100%;height:100%;border-radius:45px;overflow:hidden;background:#FFF7EC;color:#2A1A3E">
+  <div ref="{{ vpRef }}" onPointerDown="{{ onDown }}" onWheel="{{ onWheel }}" style="position:absolute;inset:0;z-index:0;overflow:hidden;background:#DFE4D1;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none">
+    <div ref="{{ worldRef }}" style="position:absolute;left:0;top:0;width:{{ worldW }};height:{{ worldH }};background:#E8ECDC;font-family:'Figtree',sans-serif">
+      <sc-if value="{{ isDemo }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(120,140,100,.10) 1px,transparent 1px);background-size:82px 100%;background-position:18px 0"></div>
+      <div style="position:absolute;left:0;top:250px;width:760px;height:44px;background:#FFFFFF;box-shadow:0 0 0 5px #DEDACF"></div>
+      <div style="position:absolute;left:0;top:560px;width:760px;height:44px;background:#FFFFFF;box-shadow:0 0 0 5px #DEDACF"></div>
+      <div style="position:absolute;left:0;top:870px;width:760px;height:44px;background:#FFFFFF;box-shadow:0 0 0 5px #DEDACF"></div>
+      <div style="position:absolute;left:178px;top:0;width:44px;height:1100px;background:#FFFFFF;box-shadow:0 0 0 5px #DEDACF"></div>
+      <div style="position:absolute;left:498px;top:0;width:44px;height:1100px;background:#FFFFFF;box-shadow:0 0 0 5px #DEDACF"></div>
+      <div style="position:absolute;left:178px;top:250px;width:44px;height:44px;background:#FFFFFF"></div>
+      <div style="position:absolute;left:498px;top:250px;width:44px;height:44px;background:#FFFFFF"></div>
+      <div style="position:absolute;left:178px;top:560px;width:44px;height:44px;background:#FFFFFF"></div>
+      <div style="position:absolute;left:498px;top:560px;width:44px;height:44px;background:#FFFFFF"></div>
+      <div style="position:absolute;left:178px;top:870px;width:44px;height:44px;background:#FFFFFF"></div>
+      <div style="position:absolute;left:498px;top:870px;width:44px;height:44px;background:#FFFFFF"></div>
+      <div style="position:absolute;left:300px;top:250px;font-size:11px;font-weight:700;line-height:44px;color:#8C8577;letter-spacing:1px;white-space:nowrap">MAPLE ST</div>
+      <div style="position:absolute;left:600px;top:250px;font-size:11px;font-weight:700;line-height:44px;color:#8C8577;letter-spacing:1px;white-space:nowrap">MAPLE ST</div>
+      <div style="position:absolute;left:300px;top:560px;font-size:11px;font-weight:700;line-height:44px;color:#8C8577;letter-spacing:1px;white-space:nowrap">WILLOW AVE</div>
+      <div style="position:absolute;left:600px;top:560px;font-size:11px;font-weight:700;line-height:44px;color:#8C8577;letter-spacing:1px;white-space:nowrap">WILLOW AVE</div>
+      <div style="position:absolute;left:300px;top:870px;font-size:11px;font-weight:700;line-height:44px;color:#8C8577;letter-spacing:1px;white-space:nowrap">BIRCH LN</div>
+      <div style="position:absolute;left:600px;top:870px;font-size:11px;font-weight:700;line-height:44px;color:#8C8577;letter-spacing:1px;white-space:nowrap">BIRCH LN</div>
+      <div style="position:absolute;left:178px;top:410px;width:44px;height:0;display:flex;justify-content:center"><div style="transform:rotate(-90deg);font-size:11px;font-weight:700;color:#8C8577;letter-spacing:1px;white-space:nowrap;line-height:1">OAK DR</div></div>
+      <div style="position:absolute;left:178px;top:730px;width:44px;height:0;display:flex;justify-content:center"><div style="transform:rotate(-90deg);font-size:11px;font-weight:700;color:#8C8577;letter-spacing:1px;white-space:nowrap;line-height:1">OAK DR</div></div>
+      <div style="position:absolute;left:498px;top:410px;width:44px;height:0;display:flex;justify-content:center"><div style="transform:rotate(-90deg);font-size:11px;font-weight:700;color:#8C8577;letter-spacing:1px;white-space:nowrap;line-height:1">CEDAR CT</div></div>
+      <div style="position:absolute;left:498px;top:1000px;width:44px;height:0;display:flex;justify-content:center"><div style="transform:rotate(-90deg);font-size:11px;font-weight:700;color:#8C8577;letter-spacing:1px;white-space:nowrap;line-height:1">CEDAR CT</div></div>
+      <div style="position:absolute;left:552px;top:614px;width:200px;height:246px;border-radius:14px;background:#CFE0B6">
+        <div style="position:absolute;left:0;top:118px;width:200px;height:8px;background:#EDE6D6"></div>
+        <div style="position:absolute;left:96px;top:0;width:8px;height:246px;background:#EDE6D6"></div>
+        <div style="position:absolute;left:30px;top:30px;width:120px;height:70px;border-radius:50%;background:#B5D7E8;box-shadow:inset 0 0 0 3px #A3CBDF"></div>
+        <div style="position:absolute;left:0;right:0;top:160px;text-align:center;font-size:12px;font-weight:700;color:#5E8A4C;letter-spacing:1px">PUMPKIN PARK</div>
+      </div>
+      <sc-for list="{{ trees }}" as="t" hint-placeholder-count="0">
+        <div style="position:absolute;left:{{ t.left }};top:{{ t.top }};width:{{ t.size }};height:{{ t.size }};border-radius:50%;background:radial-gradient(circle at 35% 35%,#A9C98A,#7FA862 70%);box-shadow:3px 4px 0 rgba(60,70,40,.14)"></div>
+      </sc-for>
+      </sc-if>
+      <div ref="{{ baseRef }}" class="cm-base" onClick="{{ onBaseClick }}" style="position:absolute;left:0;top:0"></div>
+      <sc-for list="{{ worldHouses }}" as="h" hint-placeholder-count="0">
+        <div onClick="{{ h.onClick }}" style="position:absolute;left:{{ h.left }};top:{{ h.top }};width:56px;height:64px;cursor:pointer;pointer-events:{{ h.pe }}">
+          <sc-if value="{{ h.drawRoof }}">
+          <div style="position:absolute;left:37px;top:{{ h.driveT }};width:11px;height:{{ h.driveH }};background:#DAD5CA"></div>
+          <div style="position:absolute;left:3px;top:{{ h.roofT }};width:50px;height:40px;border-radius:2px;background:linear-gradient(180deg,{{ h.roofA }} 50%,{{ h.roofB }} 50%);box-shadow:2px 3px 0 rgba(40,40,30,.16)"></div>
+          </sc-if>
+          <sc-if value="{{ h.pumpkin }}"><div style="position:absolute;left:12px;top:{{ h.porchT }};width:8px;height:8px;border-radius:50%;background:#F08A2C"></div></sc-if>
+          <sc-if value="{{ h.hasPin }}">
+            <div style="position:absolute;left:11px;top:{{ h.pinT }};width:34px;height:42px;pointer-events:auto;opacity:{{ h.op }};transform:scale(calc({{ h.scale }} * var(--iz, 1)));transform-origin:50% 100%;transition:transform .2s,opacity .2s;z-index:3">
+              <div style="position:absolute;left:12px;top:26px;width:10px;height:10px;background:{{ h.ring }};transform:rotate(45deg)"></div>
+              <div style="position:absolute;left:0;top:0;width:34px;height:34px;border-radius:17px;background:#fff;border:3px solid {{ h.ring }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(30,25,20,.28)">
+                <sc-if value="{{ h.hasIcon }}"><span style="position:relative;width:22px;height:22px;flex:none"><sc-for list="{{ h.icon }}" as="p"><span style="position:absolute;left:{{ p.l }};top:{{ p.t }};width:{{ p.w }};height:{{ p.h }};border-radius:{{ p.r }};background:{{ p.bg }};transform:{{ p.tf }}"></span></sc-for></span></sc-if>
+                <sc-if value="{{ h.hasMark }}"><span style="font-size:9px;font-weight:800;color:#6E6878;letter-spacing:.3px">{{ h.mark }}</span></sc-if>
+              </div>
+              <sc-if value="{{ h.hasMore }}"><span style="position:absolute;right:-10px;top:14px;height:18px;min-width:18px;padding:0 4px;border-radius:9px;background:#2A1A3E;color:#fff;font-size:10px;font-weight:800;line-height:18px;text-align:center;box-sizing:border-box">{{ h.more }}</span></sc-if>
+              <sc-if value="{{ h.hasFriend }}"><span style="position:absolute;left:-10px;top:14px;width:18px;height:18px;border-radius:9px;background:{{ h.friendColor }};border:2px solid #fff;box-sizing:border-box;font-size:9px;font-weight:800;line-height:14px;text-align:center;color:#2A1A3E"><span style="width:14px;height:14px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(0.36)"><sc-for list="{{ h.friendParts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span></sc-if>
+              <sc-if value="{{ h.isFull }}"><span style="position:absolute;left:50%;top:-14px;transform:translateX(-50%);padding:0 5px;border-radius:5px;background:#FFC83D;color:#2A1A3E;font-size:9px;font-weight:800;line-height:14px;white-space:nowrap">FULL-SIZE</span></sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{ h.isPick }}"><div style="position:absolute;left:12px;top:{{ h.pickT }};width:32px;height:32px;border-radius:16px;border:2px dashed #FF7A1A;background:rgba(255,255,255,.95);box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#FF7A1A;animation:tbhop 1s ease-in-out infinite;z-index:3">+</div></sc-if>
+          <sc-if value="{{ h.showLabel }}"><div style="position:absolute;left:50%;top:{{ h.labelT }};transform:translateX(-50%) scale(var(--iz, 1));transform-origin:50% 0;padding:0 8px;border-radius:6px;background:#2A1A3E;color:#fff;font-size:11px;font-weight:700;line-height:20px;white-space:nowrap;z-index:4">{{ h.label }}</div></sc-if>
+        </div>
+      </sc-for>
+      <div style="position:absolute;left:{{ meLeft }};top:{{ meTop }};width:36px;height:36px;pointer-events:none;transform:scale(var(--iz, 1))">
+        <div style="position:absolute;inset:0;border-radius:18px;background:#4DA3FF;animation:cmpulse 2s infinite"></div>
+        <div style="position:absolute;inset:0;border-radius:18px;background:{{ meAv.color }};border:3px solid #fff;box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#2A1A3E;box-shadow:0 2px 8px rgba(30,25,20,.35)"><span style="width:30px;height:30px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(0.75)"><sc-for list="{{ meAv.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></div>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;left:0;right:0;top:0;z-index:500;padding-bottom:18px;background:linear-gradient(#FFF7EC 62%,rgba(255,247,236,0));pointer-events:none">
+    <div style="height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 32px;font-weight:700;font-size:15px">
+      <span>7:42</span>
+      <div style="width:108px;height:31px;border-radius:20px;background:#1E1428"></div>
+      <span style="display:flex;gap:5px;align-items:center"><span style="width:17px;height:10px;border-radius:2px;background:#2A1A3E"></span><span style="width:24px;height:11px;border-radius:3px;border:1.5px solid #2A1A3E;box-sizing:border-box;padding:1px;display:flex"><span style="height:100%;width:70%;background:#2A1A3E;border-radius:1px"></span></span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:2px 16px 10px;pointer-events:auto">
+      <button onClick="{{ openMe }}" style="flex:none;width:48px;height:48px;border-radius:24px;border:3px solid #fff;background:{{ meAv.color }};box-shadow:0 4px 12px rgba(42,26,62,.2);font:800 19px 'Figtree',sans-serif;color:#2A1A3E;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0"><span style="width:42px;height:42px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(1.05)"><sc-for list="{{ meAv.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></button>
+      <button onClick="{{ openPlace }}" style="flex:1;min-width:0;border:none;background:transparent;padding:0;text-align:left;cursor:pointer;color:#2A1A3E;font-family:'Figtree',sans-serif">
+        <div style="font-size:25px;font-weight:800;line-height:1.05;letter-spacing:-.3px">Candy Map</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:#FF7A1A;line-height:1.3;margin-top:1px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ placeName }}</span><span style="flex:none;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #FF7A1A"></span></div>
+      </button>
+      <button onClick="{{ openHaul }}" style="flex:none;height:44px;padding:0 16px 0 6px;border-radius:22px;border:none;background:#2A1A3E;color:#fff;display:flex;align-items:center;gap:8px;cursor:pointer;font:700 14px 'Figtree',sans-serif;white-space:nowrap">
+        <span style="min-width:32px;height:32px;border-radius:16px;background:#FFC83D;color:#2A1A3E;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800">{{ haulCount }}</span>My haul
+      </button>
+    </div>
+    <div style="display:flex;gap:8px;padding:0 16px;overflow-x:auto;scrollbar-width:none;pointer-events:auto">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+        <button onClick="{{ f.onClick }}" style="flex:none;height:38px;padding:0 15px;border-radius:19px;border:none;background:{{ f.bg }};color:{{ f.color }};font:700 14px 'Figtree',sans-serif;cursor:pointer;box-shadow:0 3px 10px rgba(42,26,62,.12);white-space:nowrap">{{ f.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+
+  <div style="position:absolute;right:16px;top:186px;z-index:500;display:flex;flex-direction:column;border-radius:24px;background:#fff;box-shadow:0 4px 14px rgba(42,26,62,.2);overflow:hidden">
+    <button onClick="{{ zoomIn }}" style="width:48px;height:48px;border:none;background:#fff;color:#2A1A3E;font:700 24px 'Figtree',sans-serif;line-height:1;cursor:pointer" style-active="background:#F4EADB">+</button>
+    <div style="height:1px;margin:0 10px;background:#EFE4D3"></div>
+    <button onClick="{{ zoomOut }}" style="width:48px;height:48px;border:none;background:#fff;color:#2A1A3E;font:700 26px 'Figtree',sans-serif;line-height:1;cursor:pointer" style-active="background:#F4EADB">−</button>
+  </div>
+
+  <button onClick="{{ recenter }}" style="position:absolute;right:16px;bottom:{{ recenterBottom }};z-index:500;width:50px;height:50px;border-radius:25px;border:none;background:#fff;box-shadow:0 4px 14px rgba(42,26,62,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:bottom .25s">
+    <span style="width:16px;height:16px;border-radius:8px;border:3px solid #FF7A1A;box-sizing:border-box"></span>
+  </button>
+
+  <sc-if value="{{ isReal }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ toggleLook }}" style="position:absolute;right:16px;bottom:{{ lookBottom }};z-index:500;height:40px;padding:0 14px;border-radius:20px;border:none;background:#fff;box-shadow:0 4px 14px rgba(42,26,62,.2);font:700 13px 'Figtree',sans-serif;color:#2A1A3E;cursor:pointer;transition:bottom .25s;white-space:nowrap">{{ lookLabel }}</button>
+  </sc-if>
+
+  <sc-if value="{{ showBrowse }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:16px;right:16px;bottom:30px;z-index:500;display:flex;gap:10px">
+      <button onClick="{{ openFriends }}" style="flex:none;height:66px;padding:0 16px;border-radius:33px;border:none;background:#fff;box-shadow:0 8px 22px rgba(42,26,62,.18);display:flex;align-items:center;gap:8px;cursor:pointer;font:700 15px 'Figtree',sans-serif;color:#2A1A3E">
+        <span style="display:flex">
+          <sc-for list="{{ friendMini }}" as="fm" hint-placeholder-count="3">
+            <span style="width:28px;height:28px;border-radius:14px;background:{{ fm.color }};border:2px solid #fff;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800"><span style="width:24px;height:24px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(0.6)"><sc-for list="{{ fm.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span>
+          </sc-for>
+        </span>Friends
+      </button>
+      <button onClick="{{ startPlace }}" style="flex:1;height:66px;border:none;border-radius:33px;background:#FF7A1A;color:#2A1A3E;font:800 20px 'Figtree',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 10px 24px rgba(255,122,26,.4);cursor:pointer" style-active="transform:scale(.97)">
+        <span style="width:30px;height:30px;border-radius:15px;background:#2A1A3E;color:#FFC83D;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1">+</span>Tag a house
+      </button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showPick }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;right:16px;bottom:30px;z-index:600;background:#fff;border-radius:30px;padding:20px;box-shadow:0 10px 30px rgba(42,26,62,.2);animation:tbpop .25s ease-out">
+      <div style="font-size:24px;font-weight:800;line-height:1.1">Tap a house!</div>
+      <div style="font-size:15px;color:#8A7E9A;margin-top:4px">{{ pickSub }}</div>
+      <button onClick="{{ cancel }}" style="width:100%;height:54px;margin-top:14px;border-radius:27px;border:none;background:#F4EADB;color:#2A1A3E;font:700 16px 'Figtree',sans-serif;cursor:pointer">Cancel</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showDetail }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;bottom:0;z-index:600;background:#fff;border-radius:30px 30px 0 0;padding:10px 20px 32px;box-shadow:0 -10px 30px rgba(42,26,62,.18);animation:tbpop .25s ease-out">
+      <div style="width:40px;height:5px;border-radius:3px;background:#E3D6C4;margin:0 auto 12px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="min-width:0">
+          <div style="font-size:27px;font-weight:800;line-height:1.1">{{ sel.title }}</div>
+          <div style="font-size:14px;color:#8A7E9A;margin-top:2px">{{ sel.addr }}</div>
+        </div>
+        <button onClick="{{ closeSel }}" style="flex:none;width:38px;height:38px;border-radius:19px;border:none;background:#F4EADB;color:#2A1A3E;font:700 20px 'Figtree',sans-serif;cursor:pointer">×</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+        <span style="width:26px;height:26px;border-radius:13px;background:{{ selBy.color }};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800"><span style="width:26px;height:26px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(0.65)"><sc-for list="{{ selBy.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span>
+        <span style="font-size:14px;font-weight:600;color:#5E5470">{{ selBy.text }}</span>
+      </div>
+      <sc-if value="{{ isSkip }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:16px;padding:16px 18px;border-radius:22px;background:#F4EADB">
+          <div style="font-size:13px;font-weight:600;color:#8A7E9A">Skipped because</div>
+          <div style="font-size:24px;font-weight:800;line-height:1.1">{{ selSkip }}</div>
+        </div>
+        <button onClick="{{ unskip }}" style="width:100%;height:56px;margin-top:16px;border-radius:28px;border:none;background:#FF7A1A;color:#2A1A3E;font:800 17px 'Figtree',sans-serif;cursor:pointer">It's open now — tag it!</button>
+      </sc-if>
+      <sc-if value="{{ notSkip }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+          <sc-for list="{{ selFlags }}" as="fl" hint-placeholder-count="1">
+            <span style="height:28px;padding:0 12px;border-radius:14px;background:{{ fl.bg }};color:{{ fl.color }};font-size:14px;font-weight:800;display:flex;align-items:center">{{ fl.label }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+          <sc-for list="{{ selCandy }}" as="c" hint-placeholder-count="2">
+            <span style="height:40px;padding:0 14px 0 9px;border-radius:20px;background:#FFF7EC;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700"><span style="position:relative;width:22px;height:22px;flex:none"><sc-for list="{{ c.icon }}" as="p"><span style="position:absolute;left:{{ p.l }};top:{{ p.t }};width:{{ p.w }};height:{{ p.h }};border-radius:{{ p.r }};background:{{ p.bg }};transform:{{ p.tf }}"></span></sc-for></span>{{ c.label }}</span>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+          <div style="padding:12px 14px;border-radius:20px;background:#FFF1E0">
+            <div style="font-size:13px;font-weight:600;color:#8A7E9A">Candy level</div>
+            <div style="font-size:18px;font-weight:800;line-height:1.2">{{ selCRWord }}</div>
+            <div style="display:flex;gap:4px;margin-top:6px"><sc-for list="{{ selCR }}" as="d" hint-placeholder-count="5"><span style="width:14px;height:14px;border-radius:7px;background:{{ d.bg }}"></span></sc-for></div>
+          </div>
+          <div style="padding:12px 14px;border-radius:20px;background:#F3EDFF">
+            <div style="font-size:13px;font-weight:600;color:#8A7E9A">Spooky level</div>
+            <div style="font-size:18px;font-weight:800;line-height:1.2">{{ selSRWord }}</div>
+            <div style="display:flex;gap:4px;margin-top:6px"><sc-for list="{{ selSR }}" as="d" hint-placeholder-count="5"><span style="width:14px;height:14px;border-radius:7px;background:{{ d.bg }}"></span></sc-for></div>
+          </div>
+        </div>
+        <button onClick="{{ visit }}" style="width:100%;height:56px;margin-top:16px;border-radius:28px;border:none;background:{{ visitBg }};color:{{ visitInk }};font:800 17px 'Figtree',sans-serif;cursor:pointer">{{ visitLabel }}</button>
+        <button onClick="{{ toggleOut }}" style="width:100%;height:42px;margin-top:4px;border:none;background:transparent;color:#8A7E9A;font:700 14px 'Figtree',sans-serif;cursor:pointer">{{ outLabel }}</button>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showTag }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ cancel }}" style="position:absolute;inset:0;z-index:650;background:rgba(42,26,62,.3)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;z-index:700;max-height:88%;display:flex;flex-direction:column;background:#fff;border-radius:30px 30px 0 0;padding:10px 20px 30px;box-sizing:border-box;box-shadow:0 -10px 30px rgba(42,26,62,.2);animation:tbpop .25s ease-out">
+      <div style="width:40px;height:5px;border-radius:3px;background:#E3D6C4;margin:0 auto 10px;flex:none"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex:none">
+        <div style="display:flex;gap:6px"><sc-for list="{{ stepDots }}" as="sd" hint-placeholder-count="3"><span style="width:30px;height:6px;border-radius:3px;background:{{ sd.bg }}"></span></sc-for></div>
+        <button onClick="{{ cancel }}" style="width:38px;height:38px;border-radius:19px;border:none;background:#F4EADB;color:#2A1A3E;font:700 20px 'Figtree',sans-serif;cursor:pointer">×</button>
+      </div>
+      <div style="font-size:27px;font-weight:800;line-height:1.1;flex:none">{{ stepTitle }}</div>
+      <div style="font-size:15px;color:#8A7E9A;flex:none">{{ stepSub }}</div>
+      <div style="flex:1;min-height:0;overflow:auto;margin-top:14px">
+        <sc-if value="{{ isNick }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ nickOpts }}" as="n" hint-placeholder-count="10">
+              <button onClick="{{ n.onClick }}" style="height:44px;padding:0 16px;border-radius:22px;border:none;background:{{ n.bg }};color:#2A1A3E;font:700 15px 'Figtree',sans-serif;cursor:pointer;transition:background .15s">{{ n.label }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ skipInstead }}" style="margin-top:14px;height:44px;padding:0;border:none;background:transparent;color:#8B5CF6;font:700 15px 'Figtree',sans-serif;cursor:pointer">Skip this house instead</button>
+        </sc-if>
+        <sc-if value="{{ isCandy }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <input value="{{ other }}" onChange="{{ onOther }}" onKeyDown="{{ onOtherKey }}" placeholder="Something else? Write it in" style="flex:1;min-width:0;height:50px;border-radius:16px;border:2px solid #E3D6C4;background:#fff;padding:0 14px;font:600 16px 'Figtree',sans-serif;color:#2A1A3E;outline:none;box-sizing:border-box">
+            <button onClick="{{ addOther }}" style="flex:none;height:50px;padding:0 18px;border-radius:16px;border:none;background:{{ otherBg }};color:{{ otherInk }};font:800 15px 'Figtree',sans-serif;cursor:pointer">Add</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ candyOpts }}" as="o" hint-placeholder-count="8">
+              <button onClick="{{ o.onClick }}" style="height:50px;border-radius:16px;border:none;background:{{ o.rowBg }};color:#2A1A3E;font:700 16px 'Figtree',sans-serif;display:flex;align-items:center;gap:12px;padding:0 14px;cursor:pointer;text-align:left">
+                <span style="position:relative;width:22px;height:22px;flex:none"><sc-for list="{{ o.icon }}" as="p"><span style="position:absolute;left:{{ p.l }};top:{{ p.t }};width:{{ p.w }};height:{{ p.h }};border-radius:{{ p.r }};background:{{ p.bg }};transform:{{ p.tf }}"></span></sc-for></span>
+                <span style="flex:1">{{ o.label }}</span>
+                <span style="width:26px;height:26px;border-radius:8px;border:2px solid {{ o.boxBorder }};background:{{ o.boxBg }};box-sizing:border-box;color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center">{{ o.check }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isRate }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:700">Candy level</span><span style="font-size:16px;font-weight:800;color:#FF7A1A">{{ crWord }}</span></div>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px">
+                <sc-for list="{{ crOpts }}" as="r" hint-placeholder-count="5"><button onClick="{{ r.onClick }}" style="height:52px;border-radius:18px;border:none;background:{{ r.bg }};color:{{ r.color }};font:800 18px 'Figtree',sans-serif;cursor:pointer;transition:background .15s">{{ r.n }}</button></sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:700">Spooky level</span><span style="font-size:16px;font-weight:800;color:#8B5CF6">{{ srWord }}</span></div>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px">
+                <sc-for list="{{ srOpts }}" as="r" hint-placeholder-count="5"><button onClick="{{ r.onClick }}" style="height:52px;border-radius:18px;border:none;background:{{ r.bg }};color:{{ r.color }};font:800 18px 'Figtree',sans-serif;cursor:pointer;transition:background .15s">{{ r.n }}</button></sc-for>
+              </div>
+            </div>
+            <button onClick="{{ toggleFull }}" style="height:58px;border-radius:18px;border:none;background:#FFF7EC;color:#2A1A3E;font:700 16px 'Figtree',sans-serif;display:flex;align-items:center;justify-content:space-between;padding:0 16px;cursor:pointer">
+              <span>Full-size bars!</span>
+              <span style="width:50px;height:30px;border-radius:15px;background:{{ fullTrack }};padding:3px;box-sizing:border-box;display:flex;justify-content:{{ fullJustify }}"><span style="width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span></span>
+            </button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isSkipStep }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ skipOpts }}" as="k" hint-placeholder-count="3">
+              <button onClick="{{ k.onClick }}" style="height:60px;border-radius:20px;border:none;background:#F4EADB;color:#2A1A3E;font:800 18px 'Figtree',sans-serif;text-align:left;padding:0 18px;cursor:pointer" style-hover="background:#EADCC6">{{ k.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-top:16px;flex:none">
+        <button onClick="{{ back }}" style="height:56px;border-radius:28px;border:none;background:#F4EADB;color:#2A1A3E;font:700 16px 'Figtree',sans-serif;cursor:pointer">{{ backLabel }}</button>
+        <sc-if value="{{ notSkipStep }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ next }}" style="height:56px;border-radius:28px;border:none;background:{{ nextBg }};color:{{ nextInk }};font:800 18px 'Figtree',sans-serif;cursor:pointer;transition:background .15s">{{ nextLabel }}</button>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePanel }}" style="position:absolute;inset:0;z-index:650;background:rgba(42,26,62,.3)"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;z-index:700;height:82%;display:flex;flex-direction:column;background:#FFF7EC;border-radius:30px 30px 0 0;padding:10px 20px 0;box-sizing:border-box;animation:tbpop .25s ease-out">
+      <div style="width:40px;height:5px;border-radius:3px;background:#E3D6C4;margin:0 auto 10px;flex:none"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex:none">
+        <div style="font-size:28px;font-weight:800;line-height:1.1">{{ panelTitle }}</div>
+        <button onClick="{{ closePanel }}" style="width:38px;height:38px;border-radius:19px;border:none;background:#F4EADB;color:#2A1A3E;font:700 20px 'Figtree',sans-serif;cursor:pointer">×</button>
+      </div>
+      <div style="flex:1;min-height:0;overflow:auto;padding:14px 0 34px;scrollbar-width:none">
+        <sc-if value="{{ panelHaul }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:18px;padding:20px;border-radius:26px;background:#8B5CF6;color:#fff">
+            <div style="position:relative;width:64px;height:76px;flex:none;animation:tbbob 1.6s ease-in-out infinite">
+              <div style="position:absolute;left:0;top:0;width:64px;height:64px;border-radius:32px 32px 4px 4px;background:#fff"></div>
+              <div style="position:absolute;left:0;top:54px;width:22px;height:20px;border-radius:50%;background:#fff"></div>
+              <div style="position:absolute;left:21px;top:54px;width:22px;height:20px;border-radius:50%;background:#fff"></div>
+              <div style="position:absolute;left:42px;top:54px;width:22px;height:20px;border-radius:50%;background:#fff"></div>
+              <div style="position:absolute;left:17px;top:22px;width:9px;height:12px;border-radius:50%;background:#2A1A3E"></div>
+              <div style="position:absolute;left:38px;top:22px;width:9px;height:12px;border-radius:50%;background:#2A1A3E"></div>
+              <div style="position:absolute;left:25px;top:39px;width:14px;height:9px;border-radius:0 0 8px 8px;background:#2A1A3E"></div>
+              <div style="position:absolute;left:8px;top:36px;width:8px;height:6px;border-radius:50%;background:#FFB3D1"></div>
+              <div style="position:absolute;left:48px;top:36px;width:8px;height:6px;border-radius:50%;background:#FFB3D1"></div>
+            </div>
+            <div>
+              <div style="font-size:56px;font-weight:800;line-height:.9">{{ haulCount }}</div>
+              <div style="font-size:17px;font-weight:700">{{ haulWord }} visited tonight</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+            <div style="padding:14px 16px;border-radius:22px;background:#fff"><div style="font-size:30px;font-weight:800;line-height:1">{{ fullFound }}</div><div style="font-size:14px;font-weight:600;color:#8A7E9A">Full-size houses</div></div>
+            <div style="padding:14px 16px;border-radius:22px;background:#fff"><div style="font-size:30px;font-weight:800;line-height:1">{{ candyKinds }}</div><div style="font-size:14px;font-weight:600;color:#8A7E9A">Kinds of candy</div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding:14px 16px;border-radius:22px;background:#FFF1E0">
+            <div><div style="font-size:16px;font-weight:800">Home by 8:30 PM</div><div style="font-size:13px;font-weight:600;color:#8A7E9A">Grown-up check-in</div></div>
+            <span style="height:30px;padding:0 12px;border-radius:15px;background:#2EC4A0;color:#0E3B31;font-size:13px;font-weight:800;display:flex;align-items:center">48 min left</span>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:#8A7E9A;margin:18px 0 8px">Houses you hit</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ haulList }}" as="h" hint-placeholder-count="4">
+              <button onClick="{{ h.onClick }}" style="min-height:56px;border-radius:18px;border:none;background:#fff;color:#2A1A3E;font:700 16px 'Figtree',sans-serif;display:flex;align-items:center;gap:10px;padding:0 16px;cursor:pointer;text-align:left">
+                <span style="flex:1">{{ h.nick }}</span>
+                <sc-if value="{{ h.hasTag }}"><span style="height:24px;padding:0 9px;border-radius:12px;background:#FFC83D;font-size:12px;font-weight:800;display:flex;align-items:center">FULL-SIZE</span></sc-if>
+                <span style="display:flex;gap:3px"><sc-for list="{{ h.dots }}" as="dd"><span style="width:12px;height:12px;border-radius:6px;background:{{ dd.color }}"></span></sc-for></span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ panelFriends }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:20px;border-radius:26px;background:#FF7A1A;color:#2A1A3E">
+            <div style="font-size:15px;font-weight:700">Your friend code</div>
+            <div style="font-size:40px;font-weight:800;line-height:1.1;letter-spacing:1px">{{ myCode }}</div>
+            <div style="font-size:14px;font-weight:600;margin-top:2px">Friends with your code see your tags, and you see theirs.</div>
+            <button onClick="{{ shareCode }}" style="margin-top:12px;height:46px;padding:0 20px;border-radius:23px;border:none;background:#fff;color:#2A1A3E;font:800 15px 'Figtree',sans-serif;cursor:pointer">Share code</button>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:#8A7E9A;margin:18px 0 8px">Add a friend</div>
+          <div style="display:flex;gap:8px">
+            <input value="{{ code }}" onChange="{{ onCode }}" placeholder="Type their code" style="flex:1;min-width:0;height:52px;border-radius:18px;border:2px solid #E3D6C4;background:#fff;padding:0 16px;font:700 17px 'Figtree',sans-serif;color:#2A1A3E;outline:none;letter-spacing:1px;box-sizing:border-box">
+            <button onClick="{{ addFriend }}" style="flex:none;height:52px;padding:0 20px;border-radius:18px;border:none;background:{{ addBg }};color:{{ addInk }};font:800 16px 'Figtree',sans-serif;cursor:pointer">Add</button>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:#8A7E9A;margin:18px 0 8px">Your crew</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ friendRows }}" as="fr" hint-placeholder-count="3">
+              <div style="height:62px;border-radius:18px;background:#fff;display:flex;align-items:center;gap:12px;padding:0 14px">
+                <span style="width:40px;height:40px;border-radius:20px;background:{{ fr.color }};display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex:none"><span style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(1)"><sc-for list="{{ fr.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span>
+                <div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:800;line-height:1.1">{{ fr.name }}</div><div style="font-size:13px;font-weight:600;color:#8A7E9A">{{ fr.costume }} · {{ fr.count }}</div></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ panelPlace }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:15px;color:#8A7E9A;margin-bottom:12px;text-wrap:pretty">Load the real streets and houses where you trick-or-treat, then tag them.</div>
+          <div style="display:flex;gap:8px">
+            <input value="{{ q }}" onChange="{{ onQ }}" onKeyDown="{{ onQKey }}" placeholder="Address, street or town" style="flex:1;min-width:0;height:52px;border-radius:18px;border:2px solid #E3D6C4;background:#fff;padding:0 16px;font:600 16px 'Figtree',sans-serif;color:#2A1A3E;outline:none;box-sizing:border-box">
+            <button onClick="{{ findPlace }}" style="flex:none;height:52px;padding:0 20px;border-radius:18px;border:none;background:#FF7A1A;color:#2A1A3E;font:800 16px 'Figtree',sans-serif;cursor:pointer">Find</button>
+          </div>
+          <button onClick="{{ useMyLoc }}" style="width:100%;height:52px;margin-top:10px;border-radius:18px;border:none;background:#fff;color:#2A1A3E;font:700 16px 'Figtree',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:14px;height:14px;border-radius:7px;background:#4DA3FF;border:3px solid #CFE6FF"></span>Use my location</button>
+          <sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><div style="margin-top:12px;padding:12px 14px;border-radius:16px;background:#FFE4E1;color:#9B2C22;font-size:14px;font-weight:600">{{ err }}</div></sc-if>
+          <sc-if value="{{ isReal }}" hint-placeholder-val="{{ false }}"><button onClick="{{ backDemo }}" style="margin-top:14px;height:44px;padding:0;border:none;background:transparent;color:#8B5CF6;font:700 15px 'Figtree',sans-serif;cursor:pointer">Back to the demo neighborhood</button></sc-if>
+          <div style="font-size:12px;color:#8A7E9A;margin-top:18px">Streets and buildings from OpenStreetMap.</div>
+        </sc-if>
+        <sc-if value="{{ panelMe }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:15px;color:#8A7E9A;margin-bottom:12px">This is you on the map. Pick your costume!</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+            <sc-for list="{{ costumeOpts }}" as="co" hint-placeholder-count="8">
+              <button onClick="{{ co.onClick }}" style="aspect-ratio:1/1.15;border-radius:20px;border:3px solid {{ co.border }};background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;padding:0;color:#2A1A3E">
+                <span style="width:44px;height:44px;border-radius:22px;background:{{ co.color }};display:flex;align-items:center;justify-content:center;font:800 19px 'Figtree',sans-serif"><span style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:40px;height:40px;flex:none;transform:scale(1.1)"><sc-for list="{{ co.parts }}" as="ap"><span style="position:absolute;left:{{ ap.l }};top:{{ ap.t }};width:{{ ap.w }};height:{{ ap.h }};border-radius:{{ ap.r }};background:{{ ap.bg }};transform:{{ ap.tf }}"></span></sc-for></span></span></span>
+                <span style="font:700 13px 'Figtree',sans-serif">{{ co.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:880;display:flex;align-items:center;justify-content:center;background:rgba(255,247,236,.82)">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:0 40px">
+        <div style="position:relative;width:64px;height:76px;animation:tbbob 1s ease-in-out infinite">
+          <div style="position:absolute;left:0;top:0;width:64px;height:64px;border-radius:32px 32px 4px 4px;background:#8B5CF6"></div>
+          <div style="position:absolute;left:0;top:54px;width:22px;height:20px;border-radius:50%;background:#8B5CF6"></div>
+          <div style="position:absolute;left:21px;top:54px;width:22px;height:20px;border-radius:50%;background:#8B5CF6"></div>
+          <div style="position:absolute;left:42px;top:54px;width:22px;height:20px;border-radius:50%;background:#8B5CF6"></div>
+          <div style="position:absolute;left:17px;top:22px;width:9px;height:12px;border-radius:50%;background:#fff"></div>
+          <div style="position:absolute;left:38px;top:22px;width:9px;height:12px;border-radius:50%;background:#fff"></div>
+          <div style="position:absolute;left:26px;top:40px;width:12px;height:10px;border-radius:50%;background:#fff"></div>
+        </div>
+        <div style="font-size:22px;font-weight:800;line-height:1.15">Mapping your street…</div>
+        <div style="font-size:15px;color:#8A7E9A">{{ loadingName }}</div>
+        <button onClick="{{ cancelLoad }}" style="margin-top:6px;height:44px;padding:0 22px;border-radius:22px;border:none;background:#F4EADB;color:#2A1A3E;font:700 15px 'Figtree',sans-serif;cursor:pointer">Cancel</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isReal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:14px;bottom:18px;z-index:400;font-size:9px;color:#6E6280;background:rgba(255,255,255,.7);padding:1px 6px;border-radius:4px">© OpenStreetMap · Imagery © Esri</div>
+  </sc-if>
+
+  <sc-if value="{{ hasCheer }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:900;display:flex;align-items:center;justify-content:center;background:rgba(42,26,62,.35);pointer-events:none">
+      <div style="width:260px;padding:28px 24px 26px;border-radius:34px;background:#8B5CF6;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center;box-shadow:0 20px 50px rgba(42,26,62,.4);animation:tbzoom .4s ease-out">
+        <div style="position:relative;width:64px;height:76px;animation:tbbob 1s ease-in-out infinite">
+          <div style="position:absolute;left:0;top:0;width:64px;height:64px;border-radius:32px 32px 4px 4px;background:#fff"></div>
+          <div style="position:absolute;left:0;top:54px;width:22px;height:20px;border-radius:50%;background:#fff"></div>
+          <div style="position:absolute;left:21px;top:54px;width:22px;height:20px;border-radius:50%;background:#fff"></div>
+          <div style="position:absolute;left:42px;top:54px;width:22px;height:20px;border-radius:50%;background:#fff"></div>
+          <div style="position:absolute;left:17px;top:20px;width:9px;height:12px;border-radius:50%;background:#2A1A3E"></div>
+          <div style="position:absolute;left:38px;top:20px;width:9px;height:12px;border-radius:50%;background:#2A1A3E"></div>
+          <div style="position:absolute;left:22px;top:37px;width:20px;height:13px;border-radius:0 0 10px 10px;background:#2A1A3E"></div>
+          <div style="position:absolute;left:8px;top:35px;width:8px;height:6px;border-radius:50%;background:#FFB3D1"></div>
+          <div style="position:absolute;left:48px;top:35px;width:8px;height:6px;border-radius:50%;background:#FFB3D1"></div>
+        </div>
+        <div style="font-size:32px;font-weight:800;line-height:1.1;margin-top:12px">{{ cheerTitle }}</div>
+        <div style="font-size:16px;font-weight:600;margin-top:4px;text-wrap:pretty">{{ cheerSub }}</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:50%;top:160px;transform:translateX(-50%);z-index:950;background:#2A1A3E;color:#fff;padding:10px 18px;border-radius:22px;font-size:15px;font-weight:700;white-space:nowrap;box-shadow:0 8px 24px rgba(42,26,62,.3);animation:tbpop .25s ease-out">{{ toastText }}</div>
+  </sc-if>
+
+  <div style="position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#2A1A3E;z-index:990;pointer-events:none"></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;neighborhood&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;mapLook&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;photo&quot;,&quot;drawn&quot;],&quot;default&quot;:&quot;photo&quot;,&quot;tsType&quot;:&quot;'photo'|'drawn'&quot;},&quot;pinLabels&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const W = 760, H = 1100, ME = { x: 360, y: 582 };
+const HC = [['#9AA0A8', '#848A93'], ['#C9967A', '#B58066'], ['#A8937D', '#937F6A'], ['#7D7975', '#6A6662'], ['#A3AD97', '#8E9982'], ['#CDBDA2', '#B9A98E']];
+const ROWS = [[178, 'Maple St', 1, 250], [304, 'Maple St', 0, 294], [488, 'Willow Ave', 1, 560], [614, 'Willow Ave', 0, 604], [798, 'Birch Ln', 1, 870], [924, 'Birch Ln', 0, 914]];
+const ICONS = {
+  choc: [[2, 5, 18, 12, 2, '#6B3E26'], [4, 7, 6, 3.5, 1, '#8E5A3A'], [12, 7, 6, 3.5, 1, '#8E5A3A'], [4, 11.5, 6, 3.5, 1, '#8E5A3A'], [12, 11.5, 6, 3.5, 1, '#8E5A3A']],
+  pb: [[3, 3, 16, 16, 8, '#A8612A'], [6, 6, 10, 10, 5, '#E3A35C']],
+  gummy: [[4, 3, 6, 6, 3, '#3FBF6F'], [12, 3, 6, 6, 3, '#3FBF6F'], [4, 6, 14, 13, 7, '#3FBF6F'], [8, 10, 6, 4, 2, '#8EE0AE']],
+  sour: [[5, 5, 12, 12, 2, '#A6C424', 45], [8, 8, 6, 6, 1, '#DDEE7A', 45]],
+  pop: [[9.5, 12, 3, 10, 1.5, '#CFC6B8'], [4, 1, 14, 14, 7, '#FF5FA2'], [7, 4, 8, 8, 4, '#FFA8CC']],
+  caramel: [[4, 4, 14, 14, 3, '#C98F2E'], [6, 6, 7, 3, 2, '#EBC27A']],
+  chips: [[5, 2, 12, 18, 3, '#F2C94C'], [5, 2, 12, 4, '3px 3px 0 0', '#D9A22A'], [8, 9, 6, 6, 3, '#E5484D']],
+  toy: [[3, 7, 16, 12, 3, '#3E9BFF'], [9.5, 7, 3, 12, 0, '#BFE0FF'], [6, 3, 10, 5, 2.5, '#3E9BFF']],
+  other: [[1, 8, 6, 6, 1, '#C3B1FA', 45], [15, 8, 6, 6, 1, '#C3B1FA', 45], [5, 5, 12, 12, 6, '#8B5CF6']]
+};
+const iconParts = k => (ICONS[k] || ICONS.other).map(p => ({ l: p[0] + 'px', t: p[1] + 'px', w: p[2] + 'px', h: p[3] + 'px', r: typeof p[4] === 'string' ? p[4] : p[4] + 'px', bg: p[5], tf: p[6] ? 'rotate(' + p[6] + 'deg)' : 'none' }));
+const cinfo = k => k.startsWith('x:') ? { label: k.slice(2), color: '#8B5CF6', icon: iconParts('other') } : { ...CANDY[k], icon: iconParts(k) };
+const COLS = [22, 102, 236, 318, 400, 560, 650];
+const SLOTS = [];
+ROWS.forEach(([y, st, down, edge], r) => COLS.forEach((x, c) => { if ((r === 3 || r === 4) && c >= 5) return; SLOTS.push({ x, y, st, down, edge, num: 100 + SLOTS.length * 6 }); }));
+const TREES = (() => { let sd = 7; const rnd = () => (sd = (sd * 9301 + 49297) % 233280) / 233280; const t = []; [60, 420, 730, 1040].forEach(y => { for (let i = 0; i < 9; i++) { const x = 8 + i * 85 + rnd() * 30, s = 28 + rnd() * 14; if (Math.abs(x + s / 2 - 200) < 40 || Math.abs(x + s / 2 - 520) < 40) continue; if (x > 540 && y > 600 && y < 870) continue; t.push({ x, y: y - 17 + rnd() * 18, s }); } }); return t; })();
+const RW = { motorway: 26, trunk: 24, primary: 22, secondary: 20, tertiary: 18, residential: 14, unclassified: 14, living_street: 12, pedestrian: 8, service: 7, track: 5, footway: 3, path: 3, cycleway: 3, steps: 3 };
+const HOUSEY = /^(house|detached|residential|semidetached_house|terrace|bungalow|yes|apartments)$/;
+const tf = (u, ms) => { const c = new AbortController(); const t = setTimeout(() => c.abort(), ms); return fetch(u, { signal: c.signal }).finally(() => clearTimeout(t)); };
+const decodeMVT = buf => {
+  const b = new Uint8Array(buf), dv = new DataView(buf), td = new TextDecoder(); let p = 0;
+  const vi = () => { let r = 0, s = 1, c; do { c = b[p++]; r += (c & 127) * s; s *= 128; } while (c & 128); return r; };
+  const str = l => td.decode(b.subarray(p, p += l));
+  const skip = wt => { if (wt === 0) vi(); else if (wt === 1) p += 8; else if (wt === 2) { const l = vi(); p += l; } else if (wt === 5) p += 4; };
+  const packed = () => { const l = vi(), e = p + l, a = []; while (p < e) a.push(vi()); return a; };
+  const layers = {};
+  while (p < b.length) {
+    const k = vi();
+    if (k >> 3 !== 3 || (k & 7) !== 2) { skip(k & 7); continue; }
+    const e = vi() + p, L = { name: '', keys: [], vals: [], feats: [], extent: 4096 };
+    while (p < e) {
+      const k2 = vi(), fd = k2 >> 3, wt = k2 & 7;
+      if (fd === 1) L.name = str(vi());
+      else if (fd === 3) L.keys.push(str(vi()));
+      else if (fd === 4) { const e3 = vi() + p; let v = null; while (p < e3) { const k3 = vi(), f3 = k3 >> 3, w3 = k3 & 7; if (f3 === 1) v = str(vi()); else if (f3 === 2) { v = dv.getFloat32(p, true); p += 4; } else if (f3 === 3) { v = dv.getFloat64(p, true); p += 8; } else if (f3 === 4 || f3 === 5) v = vi(); else if (f3 === 6) { const n = vi(); v = (n % 2) ? -(n + 1) / 2 : n / 2; } else if (f3 === 7) v = !!vi(); else skip(w3); } L.vals.push(v); }
+      else if (fd === 2) { const e3 = vi() + p, F = { tags: [], type: 0, geom: [] }; while (p < e3) { const k3 = vi(), f3 = k3 >> 3, w3 = k3 & 7; if (f3 === 2) F.tags = packed(); else if (f3 === 3) F.type = vi(); else if (f3 === 4) F.geom = packed(); else skip(w3); } L.feats.push(F); }
+      else if (fd === 5) L.extent = vi();
+      else skip(wt);
+    }
+    layers[L.name] = L;
+  }
+  return layers;
+};
+const zz = n => (n >>> 1) ^ -(n & 1);
+const geomParts = g => { const parts = []; let x = 0, y = 0, i = 0, cur = null; while (i < g.length) { const c = g[i++], id = c & 7, cnt = c >> 3; if (id === 1 || id === 2) { for (let k = 0; k < cnt; k++) { x += zz(g[i++]); y += zz(g[i++]); if (id === 1) { cur = [[x, y]]; parts.push(cur); } else cur.push([x, y]); } } } return parts; };
+const OVT = 'https://overturemaps-extras-us-west-2.s3.us-west-2.amazonaws.com/tiles/2026-09-23.1/buildings.pmtiles';
+const PM = { h: null, dirs: {} };
+const pmGet = (o, l) => { const c = new AbortController(); const t = setTimeout(() => c.abort(), 15000); return fetch(OVT, { headers: { Range: 'bytes=' + o + '-' + (o + l - 1) }, signal: c.signal }).then(r => r.arrayBuffer()).finally(() => clearTimeout(t)); };
+const gunzip = buf => new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+const pmDir = async (o, l) => {
+  const key = o + ':' + l; if (PM.dirs[key]) return PM.dirs[key];
+  const b = new Uint8Array(PM.h.ic === 2 ? await gunzip(await pmGet(o, l)) : await pmGet(o, l)); let p = 0;
+  const vi = () => { let r = 0, s = 1, c; do { c = b[p++]; r += (c & 127) * s; s *= 128; } while (c & 128); return r; };
+  const n = vi(), E = []; let id = 0;
+  for (let i = 0; i < n; i++) { id += vi(); E.push({ id }); }
+  for (const e of E) e.run = vi(); for (const e of E) e.len = vi();
+  for (let i = 0; i < n; i++) { const v = vi(); E[i].off = (v === 0 && i > 0) ? E[i - 1].off + E[i - 1].len : v - 1; }
+  return (PM.dirs[key] = E);
+};
+const pmTileId = (z, x, y) => { let acc = 0; for (let t = 0; t < z; t++) acc += 4 ** t; let d = 0, s = 2 ** z / 2; const xy = [x, y]; while (true) { const rx = (xy[0] & s) > 0 ? 1 : 0, ry = (xy[1] & s) > 0 ? 1 : 0; d += s * s * ((3 * rx) ^ ry); if (ry === 0) { if (rx === 1) { xy[0] = s - 1 - xy[0]; xy[1] = s - 1 - xy[1]; } const t = xy[0]; xy[0] = xy[1]; xy[1] = t; } if (s <= 1) break; s /= 2; } return acc + d; };
+const pmTile = async (z, x, y) => {
+  if (!PM.h) { const h = new DataView(await pmGet(0, 127)), u = o => Number(h.getBigUint64(o, true)); PM.h = { root: u(8), rootLen: u(16), leaf: u(40), data: u(56), ic: h.getUint8(97), tc: h.getUint8(98) }; }
+  const id = pmTileId(z, x, y); let o = PM.h.root, l = PM.h.rootLen;
+  for (let depth = 0; depth < 4; depth++) {
+    const E = await pmDir(o, l); let lo = 0, hi = E.length - 1, m = -1;
+    while (lo <= hi) { const k = (lo + hi) >> 1; if (E[k].id <= id) { m = k; lo = k + 1; } else hi = k - 1; }
+    if (m < 0) return null; const e = E[m];
+    if (e.run === 0) { o = PM.h.leaf + e.off; l = e.len; continue; }
+    if (id >= e.id + e.run) return null;
+    const t = await pmGet(PM.h.data + e.off, e.len); return PM.h.tc === 2 ? gunzip(t) : t;
+  }
+  return null;
+};
+const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const TAGIDS = [2, 5, 8, 10, 13, 16, 19, 21, 23, 26, 29, 31, 33, 36];
+const TH = { pin: '#FF7A1A', full: '#FFC83D', skip: '#C9C2D3', ring: '#FFFFFF', pinInk: '#2A1A3E', skipInk: '#5E5470', pinR: '50%', pinFont: "800 16px 'Figtree',sans-serif", body: "'Figtree',sans-serif", shadow: '0 4px 10px rgba(42,26,62,.35)', labelBg: '#2A1A3E', labelInk: '#FFFFFF', labelR: '10px', meRing: '#FFFFFF',
+  chipBg: '#FFFFFF', chipInk: '#2A1A3E', chipOnBg: '#2A1A3E', chipOnInk: '#FFFFFF', off: '#F4EADB', cr: '#FF7A1A', sr: '#8B5CF6', srInk: '#FFFFFF', mutedInk: '#8A7E9A', line: '#D9CBB6', rowBg: '#FFF7EC', rowOn: '#F3EDFF', rcBrowse: '110px', rcPlace: '204px' };
+const CANDY = { choc: { label: 'Chocolate bars', color: '#8A5A3B' }, pb: { label: 'Peanut butter cups', color: '#E8933A' }, gummy: { label: 'Gummies', color: '#3FBF6F' }, sour: { label: 'Sour stuff', color: '#B8D430' }, pop: { label: 'Lollipops', color: '#FF5FA2' }, caramel: { label: 'Caramels', color: '#D9A441' }, chips: { label: 'Chips', color: '#F2C94C' }, toy: { label: 'Toys & stickers', color: '#3E9BFF' } };
+const NICK = ['Candy Castle', 'Spooky Mansion', 'Pumpkin Palace', 'Skeleton Shack', 'Sugar Shack', 'Witch Hut', 'Bat Cave', 'Monster Manor', 'Goblin Garage', 'Treat Tower', 'Cobweb Cottage', 'Zombie Zone'];
+const COST = { witch: ['Witch', '#A98BFF', 'W'], vampire: ['Vampire', '#FF6B6B', 'V'], robot: ['Robot', '#6FB8FF', 'R'], pumpkin: ['Pumpkin', '#FF9A4A', 'P'], ghost: ['Ghost', '#CBBDFF', 'G'], hero: ['Superhero', '#F5C518', 'S'], dino: ['Dinosaur', '#5FD38A', 'D'], mummy: ['Mummy', '#D8C7A0', 'M'] };
+const SK = '#F6D3B3', INK = '#2A1A3E';
+const AVP = {
+  witch: [[9, 17, 22, 21, 11, '#9FD9A0'], [14, 25, 3, 4, 2, INK], [23, 25, 3, 4, 2, INK], [17, 31, 6, 2, 1, INK], [13, 0, 14, 17, '7px 7px 2px 2px', INK], [13, 11, 14, 3, 0, '#8B5CF6'], [3, 14, 34, 5, 3, INK]],
+  vampire: [[3, 22, 34, 20, '10px 10px 4px 4px', '#C62828'], [9, 6, 22, 26, 11, '#EDE7F2'], [9, 4, 22, 9, '11px 11px 2px 2px', INK], [17, 8, 6, 6, 1, INK, 45], [13, 17, 4, 3, 2, '#C62828'], [23, 17, 4, 3, 2, '#C62828'], [15, 24, 10, 2, 1, INK], [16, 25, 2, 3, 0, '#fff'], [22, 25, 2, 3, 0, '#fff']],
+  robot: [[19, 2, 2, 7, 1, '#7A8594'], [17, 0, 6, 4, 2, '#FF5F5F'], [4, 15, 4, 8, 2, '#7A8594'], [32, 15, 4, 8, 2, '#7A8594'], [7, 7, 26, 25, 5, '#C4CDD8'], [10, 12, 20, 9, 3, INK], [13, 15, 5, 3, 1, '#5FE0FF'], [22, 15, 5, 3, 1, '#5FE0FF'], [14, 25, 12, 3, 1, '#7A8594']],
+  pumpkin: [[4, 9, 32, 27, 14, '#FF8A1F'], [15, 9, 10, 27, 8, '#FFA04A'], [18, 3, 4, 8, 2, '#4A7A2C'], [11, 17, 6, 6, 1, '#5A2A00', 45], [23, 17, 6, 6, 1, '#5A2A00', 45], [12, 26, 16, 5, '0 0 5px 5px', '#5A2A00']],
+  ghost: [[8, 4, 24, 28, '12px 12px 3px 3px', '#FFFFFF'], [8, 28, 9, 8, 4, '#FFFFFF'], [15.5, 28, 9, 8, 4, '#FFFFFF'], [23, 28, 9, 8, 4, '#FFFFFF'], [14, 13, 4, 6, 2, INK], [22, 13, 4, 6, 2, INK], [17, 22, 6, 5, 3, INK]],
+  hero: [[5, 20, 30, 22, '4px 4px 10px 10px', '#E5484D'], [10, 5, 20, 24, 10, SK], [10, 3, 20, 9, '10px 10px 2px 2px', '#3A2A1E'], [10, 12, 20, 6, 3, '#2E5BD8'], [14, 13, 4, 3, 2, '#fff'], [22, 13, 4, 3, 2, '#fff'], [17, 22, 6, 2, 1, '#3A2A1E'], [16, 32, 8, 6, 2, '#FFC83D']],
+  dino: [[8, 7, 6, 6, 1, '#2E9E6A', 45], [16.5, 3, 7, 7, 1, '#2E9E6A', 45], [26, 7, 6, 6, 1, '#2E9E6A', 45], [6, 9, 28, 26, 13, '#5FD38A'], [11, 16, 18, 16, 9, SK], [15, 21, 3, 3, 2, INK], [22, 21, 3, 3, 2, INK], [18, 27, 4, 2, 1, INK]],
+  mummy: [[8, 5, 24, 31, 12, '#EFE6D2'], [6, 10, 28, 3, 0, '#D2C29F', -8], [6, 29, 28, 3, 0, '#D2C29F', -5], [12, 19, 16, 7, 3, INK], [14, 20.5, 4, 4, 2, '#FFE27A'], [22, 20.5, 4, 4, 2, '#FFE27A'], [6, 15, 28, 2.5, 0, '#D2C29F', 6]]
+};
+const avParts = k => (AVP[k] || AVP.pumpkin).map(p => ({ l: p[0] + 'px', t: p[1] + 'px', w: p[2] + 'px', h: p[3] + 'px', r: typeof p[4] === 'string' ? p[4] : p[4] + 'px', bg: p[5], tf: p[6] ? 'rotate(' + p[6] + 'deg)' : 'none' }));
+const SKIPS = ['Lights off', 'Too spooky', 'No one home'];
+const CHEERS = ['BOO-yah!', 'Spook-tacular!', 'Ghoul job!', 'Fang-tastic!', 'Sweet!!'];
+const CRW = ['Tap a number', 'Meh', 'Okay', 'Good', 'Great', 'AMAZING'];
+const SRW = ['Tap a number', 'Not scary', 'A little', 'Spooky', 'Very spooky', 'TERRIFYING'];
+const STREETS = ['Maple St', 'Willow Ave', 'Birch Ln', 'Cedar Ct', 'Oak St', 'Elm Pl'];
+const NEWF = [['Sam', 'dino'], ['Zoe', 'hero'], ['Kai', 'mummy'], ['Nia', 'ghost']];
+const SEED = [
+  [1, 3, 'Candy Castle', ['choc', 'pb'], 5, 2, 1, 0, null, 'me', 1],
+  [-1, 2, 'Sugar Shack', ['gummy', 'sour'], 4, 1, 0, 0, null, 'maya', 1],
+  [2, -2, 'Skeleton Shack', ['pop'], 2, 5, 0, 1, null, 'leo', 0],
+  [-2, -3, 'Monster Manor', ['choc'], 4, 5, 1, 0, null, 'ava', 0],
+  [3, 1, 'Bat Cave', ['toy', 'pop'], 3, 4, 0, 0, null, 'me', 1],
+  [-3, 0, null, [], 0, 0, 0, 0, 'Lights off', 'maya', 0],
+  [0, -4, 'Pumpkin Palace', ['chips', 'choc'], 4, 3, 0, 0, null, 'me', 1],
+  [4, -1, 'Witch Hut', ['gummy'], 3, 4, 0, 0, null, 'leo', 0],
+  [-4, 3, 'Treat Tower', ['choc', 'gummy', 'sour'], 5, 1, 1, 0, null, 'ava', 0],
+  [1, -1, 'Cobweb Cottage', ['caramel'], 2, 3, 0, 0, null, 'me', 1],
+  [-1, -1.5, null, [], 0, 0, 0, 0, 'No one home', 'me', 0],
+  [2.5, 4, 'Goblin Garage', ['toy'], 3, 2, 0, 0, null, 'maya', 0],
+  [-3, -4.5, 'Zombie Zone', ['choc', 'sour'], 4, 5, 0, 1, null, 'leo', 0],
+  [3.5, -4, null, [], 0, 0, 0, 0, 'Too spooky', 'ava', 0]
+];
+const EMPTY = { nick: null, candy: [], cr: 0, sr: 0, full: false };
+
+class Component extends DCLogic {
+  vpRef = React.createRef(); worldRef = React.createRef(); baseRef = React.createRef();
+  W = W; H = H;
+  pan = { x: 0, y: 0 };
+  state = {
+    houses: SLOTS.map((sl, i) => { const k = TAGIDS.indexOf(i), s = k >= 0 ? SEED[k] : null; return { id: i, x: sl.x, y: sl.y, down: sl.down, edge: sl.edge, c: (i * 5) % 6, pumpkin: i % 4 === 1, addr: sl.num + ' ' + sl.st, tagged: !!s, nick: s ? s[2] : null, candy: s ? s[3] : [], cr: s ? s[4] : 0, sr: s ? s[5] : 0, full: s ? !!s[6] : false, out: s ? !!s[7] : false, skip: s ? s[8] : null, by: s ? s[9] : null, visited: s ? !!s[10] : false }; }),
+    friends: [{ id: 'maya', name: 'Maya', costume: 'witch' }, { id: 'leo', name: 'Leo', costume: 'robot' }, { id: 'ava', name: 'Ava', costume: 'vampire' }],
+    me: 'pumpkin', filter: 'all', sel: null, mode: 'browse', step: 0, d: EMPTY, editing: null, panel: null, toast: '', cheer: null, code: '', other: '', real: false, look: null, placeName: 'Demo neighborhood', q: '', loading: false, loadingName: '', err: ''
+  };
+  componentDidMount() {
+    this.ptrs = new Map();
+    this.mv = e => {
+      if (this.ptrs.has(e.pointerId)) this.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (this.ptrs.size >= 2 && this.pinch) { const [a, b] = [...this.ptrs.values()]; this.zoomAt((a.x + b.x) / 2, (a.y + b.y) / 2, this.pinch.z * Math.hypot(a.x - b.x, a.y - b.y) / this.pinch.d); if (this.drag) this.drag.moved = true; return; }
+      const d = this.drag; if (!d) return; const dx = e.clientX - d.sx, dy = e.clientY - d.sy; if (Math.abs(dx) + Math.abs(dy) > 6) d.moved = true; if (d.moved) this.setPan(d.px + dx, d.py + dy); };
+    this.up = e => {
+      this.ptrs.delete(e.pointerId); if (this.ptrs.size < 2) this.pinch = null;
+      if (this.ptrs.size === 1 && this.drag) { const p = [...this.ptrs.values()][0]; this.drag = { ...this.drag, sx: p.x, sy: p.y, px: this.pan.x, py: this.pan.y }; return; }
+      if (this.drag) { this.wasDrag = this.drag.moved; this.drag = null; setTimeout(() => { this.wasDrag = false; }, 60); } };
+    window.addEventListener('pointermove', this.mv); window.addEventListener('pointerup', this.up); window.addEventListener('pointercancel', this.up);
+    this.demoHouses = this.state.houses;
+    this.centerOn(ME.x, ME.y, 0.5, false);
+    this.wt = setTimeout(() => { if (!this.state.real) this.centerOn(ME.x, ME.y, 0.5, false); }, 250);
+    if (this.props.neighborhood) this.search(this.props.neighborhood);
+  }
+  componentDidUpdate(pp) {
+    const b = this.baseRef.current, s = this.state;
+    if (b) {
+      b.classList.toggle('cm-pick', s.mode === 'pick'); b.classList.toggle('cm-photo', s.real && this.look() === 'photo');
+      const prev = b.querySelector('.bld.sel'); if (prev) prev.classList.remove('sel');
+      if (s.real && s.sel != null) { const el = b.querySelector('[data-hid="' + s.sel + '"]'); if (el) el.classList.add('sel'); }
+    }
+    if (this.props.neighborhood && this.props.neighborhood !== pp.neighborhood) this.search(this.props.neighborhood);
+  }
+  meP() { return this.state.real ? { x: this.W / 2, y: this.H / 2 } : ME; }
+  onBaseClick = e => {
+    if (this.wasDrag) return;
+    const t = e.target.closest ? e.target.closest('[data-hid]') : null;
+    if (t) { const h = this.state.houses[+t.getAttribute('data-hid')]; if (h) this.tapHouse(h); return; }
+    const s = this.state;
+    if (!s.real || s.mode !== 'pick') { if (s.sel != null && s.mode === 'browse') this.setState({ sel: null }); return; }
+    const r = this.worldRef.current.getBoundingClientRect(), k = this.W / r.width;
+    const wx = (e.clientX - r.left) * k, wy = (e.clientY - r.top) * k;
+    let st = null, best = 1e12; (this.labels || []).forEach(l => l.pts.forEach(p => { const dd = (p[0] - wx) ** 2 + (p[1] - wy) ** 2; if (dd < best) { best = dd; st = l.name; } }));
+    const h = { id: s.houses.length, x: wx - 28, y: wy - 20, c: 0, addr: st ? 'On ' + st : s.placeName, tagged: false, nick: null, candy: [], cr: 0, sr: 0, full: false, out: false, skip: null, by: null, visited: false, pumpkin: false };
+    this.setState({ houses: [...s.houses, h] }, () => this.tapHouse(h));
+  };
+  look() { return this.state.look || this.props.mapLook || 'photo'; }
+  async search(q) {
+    q = (q || '').trim(); if (!q) return;
+    this.setState({ loading: true, loadingName: q, err: '' });
+    let hit = null;
+    const tok = this.tok = (this.tok || 0) + 1;
+    try { const r = await tf('https://photon.komoot.io/api/?limit=1&q=' + encodeURIComponent(q), 8000); const j = await r.json(); const ft = j.features && j.features[0]; if (ft) { const p = ft.properties || {}; const nm = p.street || p.name || q; hit = { lat: ft.geometry.coordinates[1], lon: ft.geometry.coordinates[0], name: p.city && p.city !== nm ? nm + ', ' + p.city : nm }; } } catch (e) {}
+    if (tok !== this.tok) return;
+    if (!hit) { try { const r = await tf('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q), 8000); const j = await r.json(); if (j[0]) hit = { lat: +j[0].lat, lon: +j[0].lon, name: j[0].display_name.split(',').slice(0, 2).join(',') }; } catch (e) {} }
+    if (tok !== this.tok) return;
+    if (!hit) { this.setState({ loading: false, err: "Couldn't find that place. Try a street name and town." }); return; }
+    this.loadArea(hit.lat, hit.lon, hit.name);
+  }
+  async loadArea(lat, lon, name) {
+    this.setState({ loading: true, loadingName: name, err: '' });
+    try {
+      const tok = this.tok = (this.tok || 0) + 1;
+      const S = 2, GW = 1000, GH = 1300, Z = 14, N = 2 ** Z;
+      const tileM = 40075016.686 * Math.cos(lat * Math.PI / 180) / N, tilePx = tileM * S;
+      const cxT = (lon + 180) / 360 * N, cyT = (1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * N;
+      if (!this.tileUrl) { const r = await tf('https://tiles.openfreemap.org/planet', 10000); const j = await r.json(); this.tileUrl = j.tiles[0]; }
+      const hx = GW / 2 / tilePx, hy = GH / 2 / tilePx, jobs = [];
+      for (let tx = Math.floor(cxT - hx); tx <= Math.floor(cxT + hx); tx++) for (let ty = Math.floor(cyT - hy); ty <= Math.floor(cyT + hy); ty++)
+        jobs.push(tf(this.tileUrl.replace('{z}', Z).replace('{x}', tx).replace('{y}', ty), 15000).then(r => r.arrayBuffer()).then(buf => ({ tx, ty, L: decodeMVT(buf) })));
+      const tiles = (await Promise.allSettled(jobs)).filter(r => r.status === 'fulfilled').map(r => r.value);
+      if (tok !== this.tok) return;
+      if (!tiles.length) throw new Error('The map service is busy. Try again in a minute.');
+      const ovs = await Promise.allSettled(tiles.map(t => pmTile(Z, t.tx, t.ty).then(buf => buf && decodeMVT(buf))));
+      if (tok !== this.tok) return;
+      ovs.forEach((r, i) => { if (r.status === 'fulfilled' && r.value && r.value.building) tiles[i].L.building = r.value.building; });
+      const dPath = (pts, close) => 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L') + (close ? 'Z' : '');
+      const areas = [], roads = [], others = [], blds = [], labels = [], nums = [];
+      const CW = { motorway: 26, trunk: 24, primary: 22, secondary: 20, tertiary: 18, minor: 14, busway: 10, service: 7, track: 5, path: 3 };
+      const inView = pts => pts.some(p => p[0] > -60 && p[0] < GW + 60 && p[1] > -60 && p[1] < GH + 60);
+      tiles.forEach(({ tx, ty, L }) => {
+        const each = (name, fn) => { const l = L[name]; if (!l) return; const ex = l.extent || 4096; l.feats.forEach(F => { const props = {}; for (let i = 0; i < F.tags.length; i += 2) props[l.keys[F.tags[i]]] = l.vals[F.tags[i + 1]]; const parts = geomParts(F.geom).map(pt => pt.map(([x, y]) => [((tx + x / ex) - cxT) * tilePx + GW / 2, ((ty + y / ex) - cyT) * tilePx + GH / 2])); fn(parts, props, F.type); }); };
+        each('water', parts => parts.forEach(pts => inView(pts) && areas.push({ d: dPath(pts, true), fill: '#B5D7E8', z: 2 })));
+        each('landcover', (parts, pr) => parts.forEach(pts => inView(pts) && areas.push({ d: dPath(pts, true), fill: pr.class === 'wood' ? '#C2D6A8' : '#D6E5C2', z: 0 })));
+        each('park', (parts, pr, ty2) => ty2 === 3 && parts.forEach(pts => inView(pts) && areas.push({ d: dPath(pts, true), fill: '#CFE0B6', z: 1 })));
+        each('transportation', (parts, pr, ty2) => { if (ty2 !== 2 || pr.brunnel === 'tunnel') return; const w = CW[pr.class]; if (!w) return; parts.forEach(pts => inView(pts) && roads.push({ pts, d: dPath(pts), w, foot: w <= 3 })); });
+        each('transportation_name', (parts, pr, ty2) => { if (ty2 !== 2 || !pr.name || !CW[pr.class] || CW[pr.class] < 7) return; parts.forEach(pts => inView(pts) && labels.push({ pts, name: pr.name })); });
+        each('housenumber', (parts, pr) => parts.forEach(pts => pts.forEach(pt => nums.push({ x: pt[0], y: pt[1], n: pr.housenumber }))));
+        each('building', (parts, pr, ty2) => { if (ty2 !== 3 || pr.is_underground) return; parts.forEach(pts => {
+          if (pts.length < 3) return; let a = 0, cx = 0, cy = 0;
+          for (let i = 0; i < pts.length; i++) { const p = pts[i], n = pts[(i + 1) % pts.length]; a += p[0] * n[1] - n[0] * p[1]; }
+          if (a < 0) return; a = a / 2; pts.forEach(p => { cx += p[0]; cy += p[1]; }); cx /= pts.length; cy /= pts.length;
+          if (!inView(pts)) return; const d = dPath(pts, true);
+          if (a > 100 && a < 3200 && cx > 30 && cx < GW - 30 && cy > 40 && cy < GH - 30 && !blds.some(o => Math.abs(o.cx - cx) < 4 && Math.abs(o.cy - cy) < 4)) blds.push({ d, cx, cy, t: {}, dist: (cx - GW / 2) ** 2 + (cy - GH / 2) ** 2 }); else others.push(d);
+        }); });
+      });
+      areas.sort((x, y) => x.z - y.z);
+      blds.forEach(bd => { let best = 900, hn = null; nums.forEach(nm => { const dd = (nm.x - bd.cx) ** 2 + (nm.y - bd.cy) ** 2; if (dd < best) { best = dd; hn = nm.n; } }); if (hn) bd.t['addr:housenumber'] = hn; });
+      if (!blds.length) throw new Error('No houses on the map there yet. Try a nearby street.');
+      blds.sort((a, b) => a.dist - b.dist);
+      const named = labels;
+      const houses = blds.slice(0, 700).map((b, i) => {
+        let st = b.t['addr:street'];
+        if (!st) { let best = 1e12; named.forEach(r => r.pts.forEach(p => { const dd = (p[0] - b.cx) ** 2 + (p[1] - b.cy) ** 2; if (dd < best) { best = dd; st = r.name; } })); }
+        const addr = b.t['addr:housenumber'] && st ? b.t['addr:housenumber'] + ' ' + st : st ? 'On ' + st : name;
+        return { id: i, x: b.cx - 28, y: b.cy - 20, d: b.d, c: (i * 5) % 6, addr, tagged: false, nick: null, candy: [], cr: 0, sr: 0, full: false, out: false, skip: null, by: null, visited: false, pumpkin: false };
+      });
+      SEED.forEach((s, k) => { const h = houses[3 + k * 4]; if (h) Object.assign(h, { tagged: true, nick: s[2], candy: s[3], cr: s[4], sr: s[5], full: !!s[6], out: !!s[7], skip: s[8], by: s[9], visited: !!s[10] }); });
+      const uid = 'rl' + Math.random().toString(36).slice(2, 7);
+      const IZ = 19, IN = 2 ** IZ, itPx = 40075016.686 * Math.cos(lat * Math.PI / 180) / IN * S, icx = (lon + 180) / 360 * IN, icy = cyT / N * IN;
+      let img = '<div class="cm-sat-img" style="position:absolute;left:0;top:0;width:' + GW + 'px;height:' + GH + 'px;overflow:hidden;background:#6E7A5E">';
+      for (let tx = Math.floor(icx - GW / 2 / itPx); tx <= Math.floor(icx + GW / 2 / itPx); tx++) for (let ty = Math.floor(icy - GH / 2 / itPx); ty <= Math.floor(icy + GH / 2 / itPx); ty++)
+        img += '<img alt="" draggable="false" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/' + IZ + '/' + ty + '/' + tx + '" style="position:absolute;left:' + ((tx - icx) * itPx + GW / 2).toFixed(1) + 'px;top:' + ((ty - icy) * itPx + GH / 2).toFixed(1) + 'px;width:' + (itPx + 0.6).toFixed(1) + 'px;height:' + (itPx + 0.6).toFixed(1) + 'px">';
+      img += '</div>';
+      let svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + GW + '" height="' + GH + '" style="position:absolute;left:0;top:0;display:block"><rect class="cm-bg" width="' + GW + '" height="' + GH + '" fill="#E8ECDC"/><g class="cm-areas">';
+      areas.forEach(ar => { svg += '<path d="' + ar.d + '" fill="' + ar.fill + '"/>'; });
+      svg += '</g><g class="cm-roads">';
+      roads.filter(r => r.foot).forEach(r => { svg += '<path d="' + r.d + '" fill="none" stroke="#F6F2E9" stroke-width="3" stroke-linecap="round"/>'; });
+      const car = roads.filter(r => !r.foot).sort((x, y) => x.w - y.w);
+      car.forEach(r => { svg += '<path d="' + r.d + '" fill="none" stroke="#DEDACF" stroke-width="' + (r.w + 5) + '" stroke-linecap="round" stroke-linejoin="round"/>'; });
+      car.forEach(r => { svg += '<path d="' + r.d + '" fill="none" stroke="#FFFFFF" stroke-width="' + r.w + '" stroke-linecap="round" stroke-linejoin="round"/>'; });
+      svg += '</g><g class="cm-oth">';
+      others.forEach(d => { svg += '<path d="' + d + '" fill="#D6D1C6"/>'; });
+      svg += '</g><g class="cm-shad">';
+      houses.forEach(h => { svg += '<path d="' + h.d + '" transform="translate(2,3)" fill="rgba(40,40,30,.16)"/>'; });
+      svg += '</g><g class="cm-blds">';
+      houses.forEach(h => { svg += '<path class="bld" data-hid="' + h.id + '" d="' + h.d + '" fill="' + HC[h.c][0] + '"/>'; });
+      svg += '</g><g class="cm-lbl">';
+      const seen = {}; let li = 0;
+      labels.forEach(r => {
+        let len = 0; for (let i = 1; i < r.pts.length; i++) len += Math.hypot(r.pts[i][0] - r.pts[i - 1][0], r.pts[i][1] - r.pts[i - 1][1]);
+        if (len < 170 || (seen[r.name] || 0) >= 2) return; seen[r.name] = (seen[r.name] || 0) + 1;
+        let pts = r.pts; if (pts[0][0] > pts[pts.length - 1][0]) pts = [...pts].reverse();
+        const id = uid + (li++);
+        svg += '<path id="' + id + '" d="' + dPath(pts) + '" fill="none"/><text font-family="Figtree,sans-serif" font-size="11" font-weight="700" fill="#8C8577" letter-spacing="1" dy="4"><textPath href="#' + id + '" startOffset="50%" text-anchor="middle">' + esc(r.name.toUpperCase()) + '</textPath></text>';
+      });
+      svg += '</g></svg>';
+      svg = img + svg; this.labels = labels;
+      this.W = GW; this.H = GH; this.z = 1.6;
+      if (this.baseRef.current) this.baseRef.current.innerHTML = svg;
+      this.setState({ houses, real: true, placeName: name, loading: false, sel: null, mode: 'browse', panel: null, filter: 'all', editing: null }, () => this.centerOn(GW / 2, GH / 2, 0.5, false));
+    } catch (e) { this.setState({ loading: false, err: e.message || 'Something went wrong.', panel: 'place' }); }
+  }
+  backDemo() {
+    this.W = W; this.H = H; this.z = 1; if (this.baseRef.current) this.baseRef.current.innerHTML = '';
+    this.setState({ houses: this.demoHouses, real: false, look: null, placeName: 'Demo neighborhood', sel: null, mode: 'browse', panel: null }, () => this.centerOn(ME.x, ME.y, 0.5, false));
+  }
+  componentWillUnmount() { clearTimeout(this.wt); clearTimeout(this.tt); clearTimeout(this.ct); clearTimeout(this.at); window.removeEventListener('pointermove', this.mv); window.removeEventListener('pointerup', this.up); window.removeEventListener('pointercancel', this.up); }
+  setPan(x, y) {
+    const vp = this.vpRef.current, w = this.worldRef.current; if (!vp || !w) return;
+    const vw = vp.clientWidth || 368, vh = vp.clientHeight || 822;
+    const z = this.z || 1;
+    x = Math.min(40, Math.max(vw - this.W * z - 40, x)); y = Math.min(170, Math.max(vh - this.H * z - 130, y));
+    this.pan = { x, y }; w.style.transformOrigin = '0 0'; w.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + z + ')'; w.style.setProperty('--iz', String(1 / z));
+  }
+  centerOn(x, y, fy, anim) {
+    const vp = this.vpRef.current, w = this.worldRef.current; if (!vp || !w) return;
+    if (anim) { w.style.transition = 'transform .45s cubic-bezier(.3,.7,.3,1)'; clearTimeout(this.at); this.at = setTimeout(() => { w.style.transition = ''; }, 470); }
+    const z = this.z || 1; this.setPan((vp.clientWidth || 368) / 2 - x * z, (vp.clientHeight || 822) * fy - y * z);
+  }
+  z = 1;
+  onDown = e => {
+    this.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (this.ptrs.size === 2) { const [a, b] = [...this.ptrs.values()]; this.pinch = { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, z: this.z }; return; }
+    this.drag = { sx: e.clientX, sy: e.clientY, px: this.pan.x, py: this.pan.y, moved: false };
+  };
+  zoomAt(cx, cy, nz) {
+    const vp = this.vpRef.current; if (!vp) return;
+    nz = Math.max(0.6, Math.min(3.5, nz));
+    const r = vp.getBoundingClientRect(), k = (vp.clientWidth || 368) / (r.width || 368);
+    const sx = (cx - r.left) * k, sy = (cy - r.top) * k, wx = (sx - this.pan.x) / this.z, wy = (sy - this.pan.y) / this.z;
+    this.z = nz; this.setPan(sx - wx * nz, sy - wy * nz);
+  }
+  zoomBy(fct) {
+    const vp = this.vpRef.current, w = this.worldRef.current; if (!vp || !w) return;
+    const r = vp.getBoundingClientRect();
+    w.style.transition = 'transform .25s ease'; clearTimeout(this.at); this.at = setTimeout(() => { w.style.transition = ''; }, 260);
+    this.zoomAt(r.left + r.width / 2, r.top + r.height / 2, this.z * fct);
+  }
+  onWheel = e => { this.zoomAt(e.clientX, e.clientY, this.z * Math.exp(-e.deltaY * 0.0015)); };
+  tapHouse(h) {
+    if (this.wasDrag) return;
+    const s = this.state;
+    if (s.mode === 'tag') return;
+    if (!h.tagged) { this.setState({ mode: 'tag', step: 0, editing: h.id, d: EMPTY, sel: null, panel: null }); this.centerOn(h.x + 28, h.y, 0.14, true); return; }
+    if (s.mode !== 'browse') return;
+    this.setState({ sel: h.id, panel: null }); this.centerOn(h.x + 28, h.y, 0.3, true);
+  }
+  matches(h) {
+    const f = this.state.filter;
+    if (f === 'full') return h.full;
+    if (f === 'best') return h.cr >= 4;
+    if (f === 'spooky') return h.sr >= 4;
+    if (f === 'friends') return h.by !== 'me';
+    if (f === 'new') return !h.visited && !h.skip;
+    return true;
+  }
+  toast(t) { clearTimeout(this.tt); this.setState({ toast: t }); this.tt = setTimeout(() => this.setState({ toast: '' }), 2200); }
+  cheer(sub) { clearTimeout(this.ct); this.setState({ cheer: { t: CHEERS[Math.floor(Math.random() * CHEERS.length)], s: sub } }); this.ct = setTimeout(() => this.setState({ cheer: null }), 2300); }
+  update(id, f) { this.setState(s => ({ houses: s.houses.map(h => h.id === id ? { ...h, ...f } : h) })); }
+  addOther() { const t = this.state.other.trim(); if (!t) return; const k = 'x:' + t; this.setState(s => ({ other: '', d: { ...s.d, candy: s.d.candy.includes(k) ? s.d.candy : [...s.d.candy, k] } })); }
+  setD(p) { this.setState(s => ({ d: { ...s.d, ...p } })); }
+  saveHouse(f) {
+    const s = this.state, id = s.editing; if (id == null) return;
+    this.update(id, { ...f, tagged: true, by: s.houses[id].by || 'me' });
+    this.setState({ mode: 'browse', sel: id, editing: null, filter: 'all' });
+    if (f.skip) this.toast('Skipped: ' + f.skip.toLowerCase()); else this.cheer(f.nick + ' is on the map!');
+  }
+
+  renderVals() {
+    const s = this.state, d = s.d;
+    const sel = s.houses.find(h => h.id === s.sel);
+    const av = k => { const c = COST[k]; return { label: c[0], color: c[1], letter: c[2], parts: avParts(k) }; };
+    const who = id => { if (id === 'me') return { name: 'you', ...av(s.me) }; const f = s.friends.find(x => x.id === id) || s.friends[0]; return { name: f.name, ...av(f.costume), letter: f.name[0] }; };
+    const visited = s.houses.filter(h => h.visited);
+    const open = s.houses.filter(h => h.tagged && !h.out && !h.skip).length;
+    const dots = (n, on) => [1, 2, 3, 4, 5].map(i => ({ bg: i <= n ? on : TH.line }));
+    const canNext = s.step === 0 ? !!d.nick : s.step === 1 ? d.candy.length > 0 : d.cr > 0 && d.sr > 0;
+    const stepI = s.step === 'skip' ? 3 : s.step;
+    const friendRows = s.friends.map(f => ({ name: f.name, ...av(f.costume), letter: f.name[0], costume: COST[f.costume][0], count: s.houses.filter(h => h.by === f.id).length + ' houses tagged' }));
+    const addOk = s.code.length >= 4;
+    return {
+      zoomIn: () => this.zoomBy(1.4), zoomOut: () => this.zoomBy(1 / 1.4), onWheel: this.onWheel,
+      vpRef: this.vpRef, worldRef: this.worldRef, baseRef: this.baseRef, onDown: this.onDown, onBaseClick: this.onBaseClick,
+      isDemo: !s.real, isReal: s.real,
+      lookBottom: s.mode === 'browse' && !sel && !s.panel ? '170px' : s.mode === 'pick' ? '256px' : '-90px',
+      lookLabel: this.look() === 'photo' ? 'Drawn map' : 'Photo view',
+      toggleLook: () => this.setState({ look: this.look() === 'photo' ? 'drawn' : 'photo' }),
+      pickSub: s.real ? 'Tap any roof to tag it, even houses without an outline.' : 'Pick any house with a + to tag it. Drag to look around.', worldW: this.W + 'px', worldH: this.H + 'px',
+      meLeft: (this.meP().x - 18) + 'px', meTop: (this.meP().y - 18) + 'px',
+      placeName: s.placeName, openPlace: () => this.setState({ panel: 'place', sel: null, err: '' }), panelPlace: s.panel === 'place',
+      q: s.q, onQ: e => this.setState({ q: e.target.value }), onQKey: e => { if (e.key === 'Enter') this.search(s.q); }, findPlace: () => this.search(s.q),
+      useMyLoc: () => { if (!navigator.geolocation) return this.setState({ err: 'Location is not available here. Type your address instead.' }); this.setState({ err: '' }); navigator.geolocation.getCurrentPosition(p => this.loadArea(p.coords.latitude, p.coords.longitude, 'Near you'), () => this.setState({ err: 'Location is blocked in this preview. Type your address instead.' }), { timeout: 8000 }); },
+      hasErr: !!s.err, err: s.err, cancelLoad: () => { this.tok = (this.tok || 0) + 1; this.setState({ loading: false }); }, backDemo: () => this.backDemo(), loading: s.loading, loadingName: s.loadingName,
+      trees: TREES.map(t => ({ left: t.x + 'px', top: t.y + 'px', size: t.s + 'px' })),
+      worldHouses: s.houses.filter(h => !s.real || h.tagged || h.id === s.editing).map(h => {
+        const isSel = s.sel === h.id, gray = !!(h.skip || h.out);
+        const fr = h.tagged && h.by !== 'me' ? s.friends.find(x => x.id === h.by) : null;
+        const dim = s.mode !== 'browse' || !this.matches(h);
+        const roofT = s.real || h.down ? 6 : 14, roofB = roofT + 40;
+        const driveT = s.real ? 0 : h.down ? roofB : h.edge - h.y, driveH = h.down ? h.edge - h.y - roofB : roofT - (h.edge - h.y);
+        const hasIcon = h.tagged && !gray && h.candy.length > 0;
+        return { drawRoof: !s.real, pe: s.real ? 'none' : 'auto', left: h.x + 'px', top: h.y + 'px', roofA: HC[h.c][0], roofB: HC[h.c][1], roofT: roofT + 'px', driveT: driveT + 'px', driveH: driveH + 'px', porchT: (h.down ? roofB + 2 : roofT - 10) + 'px', pumpkin: false,
+          hasPin: h.tagged, pinT: (roofT - 30) + 'px', ring: gray ? '#B7B1BF' : h.full ? '#FFC83D' : '#FF7A1A', op: dim ? 0.3 : gray ? 0.85 : 1, scale: isSel ? 1.22 : 1,
+          hasIcon, icon: hasIcon ? cinfo(h.candy[0]).icon : [], hasMark: h.tagged && !hasIcon, mark: h.skip ? (h.skip === 'Lights off' ? 'DARK' : 'SKIP') : 'OUT',
+          hasMore: hasIcon && h.candy.length > 1, more: '+' + (h.candy.length - 1), isFull: h.full && !gray,
+          hasFriend: !!fr, friendColor: fr ? COST[fr.costume][1] : '', friendLetter: fr ? fr.name[0] : '', friendParts: fr ? avParts(fr.costume) : [],
+          isPick: !h.tagged && (s.mode === 'pick' || (s.real && s.editing === h.id)), pickT: (roofT + 4) + 'px', showLabel: h.tagged && !h.skip && (isSel || !!this.props.pinLabels), labelT: (roofB + 4) + 'px', label: h.nick || '', onClick: () => this.tapHouse(h) };
+      }),
+      countText: `${s.houses.filter(h => h.tagged).length} houses tagged · ${open} giving candy`,
+      meAv: av(s.me), haulCount: visited.length, haulWord: visited.length === 1 ? 'house' : 'houses',
+      filters: [['all', 'All'], ['full', 'Full-size'], ['best', 'Best candy'], ['spooky', 'Spookiest'], ['friends', "Friends' tags"], ['new', 'Not visited']].map(([k, label]) => {
+        const on = s.filter === k;
+        return { label, bg: on ? TH.chipOnBg : TH.chipBg, color: on ? TH.chipOnInk : TH.chipInk, onClick: () => this.setState({ filter: k, sel: null }) };
+      }),
+      showBrowse: s.mode === 'browse' && !sel && !s.panel, showDetail: s.mode === 'browse' && !!sel, showPick: s.mode === 'pick', showTag: s.mode === 'tag',
+      recenterBottom: s.mode === 'browse' && !sel && !s.panel ? TH.rcBrowse : s.mode === 'pick' ? '196px' : '-90px',
+      recenter: () => { const m = this.meP(); this.centerOn(m.x, m.y, 0.5, true); },
+      sel: sel ? { ...sel, title: sel.skip ? 'Skipped house' : sel.nick } : {},
+      selBy: sel ? (() => { const w = who(sel.by); return { ...w, text: sel.by === 'me' ? 'Tagged by you' : 'Tagged by ' + w.name }; })() : {},
+      isSkip: !!(sel && sel.skip), notSkip: !!(sel && !sel.skip), selSkip: sel ? sel.skip || '' : '',
+      selCandy: sel ? sel.candy.map(cinfo) : [],
+      selCR: dots(sel ? sel.cr : 0, TH.cr), selSR: dots(sel ? sel.sr : 0, TH.sr),
+      selCRWord: sel ? CRW[sel.cr] : '', selSRWord: sel ? SRW[sel.sr] : '',
+      selFlags: sel ? [sel.full && { label: 'Full-size bars!', bg: TH.full, color: TH.pinInk }, sel.out && { label: 'Out of candy', bg: TH.skip, color: TH.skipInk }].filter(Boolean) : [],
+      visitLabel: sel && sel.visited ? 'In your haul ✓' : 'We got candy here!',
+      visitBg: sel && sel.visited ? TH.off : TH.pin, visitInk: sel && sel.visited ? TH.mutedInk : TH.pinInk,
+      visit: () => { if (sel.visited) return; this.update(sel.id, { visited: true }); this.cheer(sel.nick + ' added to your haul'); },
+      outLabel: sel && sel.out ? 'They have candy again' : 'They ran out of candy',
+      toggleOut: () => { this.update(sel.id, { out: !sel.out }); this.toast(sel.out ? 'Back in business!' : 'Marked as out'); },
+      unskip: () => this.setState({ mode: 'tag', step: 0, editing: sel.id, d: EMPTY }),
+      closeSel: () => this.setState({ sel: null }),
+      startPlace: () => { this.setState({ mode: 'pick', sel: null, panel: null }); this.toast('Tap a house with a +'); },
+      cancel: () => this.setState({ mode: 'browse', editing: null }),
+      confirmPlace: () => this.setState({ mode: 'tag', step: 0, editing: null, d: EMPTY }),
+      stepTitle: ['Name this house', 'What candy?', 'Rate it!', 'Why skip it?'][stepI],
+      stepSub: ['Pick a silly nickname', 'Tap everything you got', 'How good? How spooky?', 'Pick one'][stepI],
+      isNick: s.step === 0, isCandy: s.step === 1, isRate: s.step === 2, isSkipStep: s.step === 'skip', notSkipStep: s.step !== 'skip',
+      stepDots: [0, 1, 2].map(i => ({ bg: s.step !== 'skip' && i <= s.step ? TH.pin : TH.off })),
+      nickOpts: NICK.map(n => ({ label: n, bg: d.nick === n ? TH.pin : TH.off, onClick: () => this.setD({ nick: n }) })),
+      candyOpts: [...Object.keys(CANDY), ...d.candy.filter(k => k.startsWith('x:'))].map(k => {
+        const c = cinfo(k), on = d.candy.includes(k);
+        return { ...c, check: on ? '✓' : '', boxBg: on ? TH.sr : 'transparent', boxBorder: on ? TH.sr : TH.line, rowBg: on ? TH.rowOn : TH.rowBg, onClick: () => this.setD({ candy: on ? d.candy.filter(x => x !== k) : [...d.candy, k] }) };
+      }),
+      other: s.other, onOther: e => this.setState({ other: e.target.value.slice(0, 24) }),
+      otherBg: s.other.trim() ? TH.pin : TH.off, otherInk: s.other.trim() ? TH.pinInk : TH.mutedInk,
+      addOther: () => this.addOther(), onOtherKey: e => { if (e.key === 'Enter') this.addOther(); },
+      crOpts: [1, 2, 3, 4, 5].map(i => ({ n: i, bg: i <= d.cr ? TH.cr : TH.off, color: i <= d.cr ? TH.pinInk : TH.mutedInk, onClick: () => this.setD({ cr: i }) })),
+      srOpts: [1, 2, 3, 4, 5].map(i => ({ n: i, bg: i <= d.sr ? TH.sr : TH.off, color: i <= d.sr ? TH.srInk : TH.mutedInk, onClick: () => this.setD({ sr: i }) })),
+      crWord: CRW[d.cr], srWord: SRW[d.sr],
+      fullTrack: d.full ? TH.full : TH.line, fullJustify: d.full ? 'flex-end' : 'flex-start', toggleFull: () => this.setD({ full: !d.full }),
+      back: () => s.step === 'skip' ? this.setState({ step: 0 }) : s.step === 0 ? this.setState({ mode: 'browse', editing: null }) : this.setState({ step: s.step - 1 }),
+      backLabel: s.step === 0 ? 'Cancel' : 'Back',
+      nextLabel: s.step === 2 ? 'Add to map!' : 'Next',
+      nextBg: canNext ? TH.pin : TH.off, nextInk: canNext ? TH.pinInk : TH.mutedInk,
+      next: () => { if (!canNext) return; if (s.step < 2) return this.setState({ step: s.step + 1 }); this.saveHouse({ nick: d.nick, candy: d.candy, cr: d.cr, sr: d.sr, full: d.full, skip: null, out: false, visited: true }); },
+      skipInstead: () => this.setState({ step: 'skip' }),
+      skipOpts: SKIPS.map(r => ({ label: r, onClick: () => this.saveHouse({ nick: null, candy: [], cr: 0, sr: 0, full: false, skip: r, out: false, visited: false }) })),
+      openHaul: () => this.setState({ panel: 'haul', sel: null }), openFriends: () => this.setState({ panel: 'friends', sel: null }), openMe: () => this.setState({ panel: 'me', sel: null }),
+      closePanel: () => this.setState({ panel: null }),
+      panelOpen: !!s.panel, panelHaul: s.panel === 'haul', panelFriends: s.panel === 'friends', panelMe: s.panel === 'me',
+      panelTitle: { haul: 'My haul', friends: 'Friends', me: 'Your costume', place: 'Your neighborhood' }[s.panel] || '',
+      tabs: [['map', 'Map'], ['haul', 'Haul'], ['friends', 'Friends'], ['me', 'Me']].map(([k, l]) => {
+        const on = (s.panel || 'map') === k;
+        return { label: l, bg: on ? TH.pin : 'transparent', color: on ? TH.pinInk : TH.mutedInk, onClick: () => this.setState({ panel: k === 'map' ? null : k, sel: null, mode: 'browse' }) };
+      }),
+      haulList: visited.map(h => ({ nick: h.nick, hasTag: h.full, dots: h.candy.map(c => ({ color: cinfo(c).color })), onClick: () => { this.setState({ panel: null, sel: h.id }); this.centerOn(h.x + 28, h.y, 0.3, true); } })),
+      fullFound: visited.filter(h => h.full).length,
+      candyKinds: new Set(visited.flatMap(h => h.candy)).size,
+      myCode: 'BOO-4821', shareCode: () => this.toast('Code copied! Send it to a friend'),
+      code: s.code, onCode: e => this.setState({ code: e.target.value.toUpperCase().slice(0, 8) }),
+      addBg: addOk ? TH.pin : TH.off, addInk: addOk ? TH.pinInk : TH.mutedInk,
+      addFriend: () => {
+        if (!addOk) return;
+        const nf = NEWF[(s.friends.length - 3) % NEWF.length];
+        this.setState({ friends: [...s.friends, { id: nf[0].toLowerCase() + s.friends.length, name: nf[0], costume: nf[1] }], code: '' });
+        this.toast(nf[0] + ' joined your crew!');
+      },
+      friendRows, friendMini: friendRows.slice(0, 3),
+      costumeOpts: Object.entries(COST).map(([k, c]) => ({ label: c[0], color: c[1], letter: c[2], parts: avParts(k), border: s.me === k ? TH.pin : 'transparent', onClick: () => { this.setState({ me: k }); this.toast('Looking good, ' + c[0].toLowerCase() + '!'); } })),
+      hasCheer: !!s.cheer, cheerTitle: s.cheer ? s.cheer.t : '', cheerSub: s.cheer ? s.cheer.s : '',
+      hasToast: !!s.toast, toastText: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
